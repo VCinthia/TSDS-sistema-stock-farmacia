@@ -1,6 +1,6 @@
 # Proyecto Integrador 4 - Sistema de Control de Stock para Farmacias
 
-Aplicación web fullstack desarrollada como trabajo final de la materia PROYECTO INTEGRADOR 4. El sistema permite gestionar el stock de medicamentos y productos farmacéuticos mediante un frontend en Angular, y un backend desarrollado en NestJS con TypeORM, conectado a una base de datos MySQL alojada en un contenedor Docker.
+Aplicación web fullstack desarrollada como trabajo final de la materia **PROYECTO INTEGRADOR 4**. El sistema permite gestionar el stock de medicamentos y productos farmacéuticos mediante un frontend en Angular, y un backend desarrollado en NestJS con TypeORM, conectado a una base de datos MySQL alojada en un contenedor Docker.
 
 ---
 
@@ -41,7 +41,7 @@ Aplicación web fullstack desarrollada como trabajo final de la materia PROYECTO
 ### Clonar el repositorio
 
 ```bash
-git clone <url-del-repo>
+git clone https://github.com/VCinthia/TSDS-sistema-stock-farmacia.git
 cd AppFarmacia
 ```
 
