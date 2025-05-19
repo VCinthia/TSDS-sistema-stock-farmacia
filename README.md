@@ -42,7 +42,7 @@ Aplicación web fullstack desarrollada como trabajo final de la materia **PROYEC
 
 ```bash
 git clone https://github.com/VCinthia/TSDS-sistema-stock-farmacia.git
-cd AppFarmacia
+cd TSDS-sistema-stock-farmacia
 ```
 
 ### Levantar la base de datos (Docker Compose)
