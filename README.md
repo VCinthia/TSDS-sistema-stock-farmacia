@@ -57,6 +57,48 @@ Esto iniciará un contenedor MySQL en el puerto `3306` con los siguientes datos:
 - **Contraseña:** `1234`
 - **Base de datos:** `sistemastock`
 
+
+### Conexión a la base de datos desde DBeaver o MySQL Workbench
+
+Si al intentar conectarte a la base de datos MySQL del contenedor se muestra el siguiente error:
+
+> `Public Key Retrieval is not allowed`
+
+Esto ocurre porque MySQL 8 usa por defecto un método de autenticación llamado `caching_sha2_password`, que algunos clientes no permiten usar sin configuración adicional.
+
+
+### DBeaver
+
+**Solución 1: modificar propiedades del driver**
+
+1. Abrir la conexión `sistemastock` y hacer clic en **Editar conexión**.
+2. Ir a la pestaña **Driver Properties**.
+3. Buscar y cambiar a TRUE:
+   - **Name:** `allowPublicKeyRetrieval`
+   - **Value:** `true`
+4. Verificar que `useSSL` esté configurado como `false`.
+
+**Solución 2: modificar directamente la URL JDBC**
+
+```
+jdbc:mysql://localhost:3306/sistemastock?allowPublicKeyRetrieval=true&useSSL=false
+```
+
+Pegar esta URL en la pestaña de configuración principal.
+
+
+### MySQL Workbench
+
+En general, MySQL Workbench **no presenta este error**, pero si llega a ocurrir:
+
+1. Editar la conexión.
+2. En la pestaña **Advanced** o **Options**, buscar un campo para propiedades adicionales.
+3. Agregar lo siguiente a la URL de conexión:
+
+```
+?allowPublicKeyRetrieval=true&useSSL=false
+```
+
 ---
 
 ## Backend (NestJS)
