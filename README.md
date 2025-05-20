@@ -25,6 +25,12 @@ Aplicación web fullstack desarrollada como trabajo final de la materia **PROYEC
 
 ---
 
+## Modelo
+
+![Diagrama Entidad-Relación (DER)](https://github.com/user-attachments/assets/7f14d762-bd48-4098-bdac-c8e24f5a9fd8)
+
+---
+
 ## Tecnologías utilizadas
 
 - **Frontend:** Angular 17 (con CSS)
