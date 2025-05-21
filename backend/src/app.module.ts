@@ -12,10 +12,14 @@ import { VentaModule } from './modules/venta/venta.module';
 import { DetalleVentaModule } from './modules/detalle-venta/detalle-venta.module';
 import { TicketRecetaModule } from './modules/ticket-receta/ticket-receta.module';
 import { ReporteAnmatModule } from './modules/reporte-anmat/reporte-anmat.module';
+import { SeedModule } from './modules/seed/seed.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ 
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env.development',
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -38,6 +42,7 @@ import { ReporteAnmatModule } from './modules/reporte-anmat/reporte-anmat.module
     DetalleVentaModule,
     TicketRecetaModule,
     ReporteAnmatModule,
+    SeedModule,
   ],
 
 })

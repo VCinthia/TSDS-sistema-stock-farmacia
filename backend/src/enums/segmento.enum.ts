@@ -3,4 +3,5 @@ export enum Segmento {
   BRONCE = 'BRONCE',
   PLATA = 'PLATA',
   ORO = 'ORO',
+  PLATINO = 'PLATINO'
 }

@@ -2,12 +2,16 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { LoteService } from './lote.service';
 import { CreateLoteDto } from './dto/create-lote.dto';
 import { UpdateLoteDto } from './dto/update-lote.dto';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('lote')
 @Controller('lote')
 export class LoteController {
   constructor(private readonly loteService: LoteService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nuevo Lote' })
+  @ApiResponse({ status: 201, description: 'Lote creado exitosamente', type: CreateLoteDto })
   create(@Body() createLoteDto: CreateLoteDto) {
     return this.loteService.create(createLoteDto);
   }
