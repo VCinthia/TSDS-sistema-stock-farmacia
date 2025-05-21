@@ -9,19 +9,19 @@ body {
 /* styles.css */
 
 h1,h2{
-    color: var(--color-accent);
+    color: var(--color-primary);
 }
 
 :root {
   /* Colores primarios */
   --bg-page: #E9F1FA;
   --color-primary: #465A5F;
-  /* --color-primary-50:  rgba(63, 81, 181, 0.1);
-  --color-primary-100: rgba(63, 81, 181, 0.2); */
+  --color-primary-50:  #3a4a4e;
+  /* --color-primary-100: rgba(63, 81, 181, 0.2); */ 
 
   /* Colores secundarios / accent */
-  --color-accent:    #465A5F;
-  /* --color-accent-50:  rgba(233, 30,  99,  0.1); */
+  --color-accent:    #325782;
+  --color-accent-50:  #2b4a6d;
   --color-secondary: #D0DAFF;
   /* Colores de alerta */
   --color-warn:      #f44336;

@@ -1,0 +1,37 @@
+body{
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-color);
+    padding: 30px;
+    
+}
+
+mat-card{
+    width: 40vw;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-color);
+    border: none;
+    box-shadow: none
+}
+
+mat-form-field{
+    width: 100%;
+}
+
+h1{
+    padding-bottom: 30px;
+}
+
+img{
+    padding-bottom: 50px;
+}
+
+app-boton-primario{
+    width: 300px;
+    height: 50px;
+    padding-top: 20px;
+}
