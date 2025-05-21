@@ -1,17 +1,18 @@
-version: '3.8'
-
 services:
   mysql:
-    image: mysql:8
+    image: mysql:8.0.42
     container_name: mysql-farmacia
     restart: unless-stopped
     environment:
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: 1234 
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: sistemastock
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./initdb/:/docker-entrypoint-initdb.d/  # <- Carpeta local mapeada
     networks:
       - backend-network
 
