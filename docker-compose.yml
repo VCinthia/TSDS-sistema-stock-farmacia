@@ -16,6 +16,21 @@ services:
     networks:
       - backend-network
 
+  backend:  # Servicio para NestJS
+    build: ./backend  # Ruta a tu Dockerfile del backend
+    ports:
+      - "3000:3000"  # Mapeo de puertos (host:container)
+    volumes:
+      - ./backend:/app  # Monta el código fuente (para desarrollo)
+      - /app/node_modules  # Excluye node_modules del volumen
+    environment:
+      NODE_ENV: development
+    command: npm run start:dev  # comando de inicio
+    depends_on:
+      - mysql  # Espera a que MySQL esté listo    
+    networks:
+      - backend-network
+
 volumes:
   mysql_data:
 
