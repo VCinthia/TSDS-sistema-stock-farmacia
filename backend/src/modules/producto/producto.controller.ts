@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ProductoService } from './producto.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('producto')
 export class ProductoController {
@@ -13,6 +14,7 @@ export class ProductoController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Retorna todos los productos' })
   findAll() {
     return this.productoService.findAll();
   }

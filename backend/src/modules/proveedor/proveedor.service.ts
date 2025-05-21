@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProveedorDto } from './dto/create-proveedor.dto';
 import { UpdateProveedorDto } from './dto/update-proveedor.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Proveedor } from 'src/entities/proveedor.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProveedorService {
-  create(createProveedorDto: CreateProveedorDto) {
-    return 'This action adds a new proveedor';
+  constructor(
+    @InjectRepository(Proveedor)
+    private readonly proveedorRepo: Repository<Proveedor>,
+  ) {}
+
+  create(createProveedorDto: CreateProveedorDto):Promise<Proveedor> {
+    const nuevoProveedor = this.proveedorRepo.create(createProveedorDto);
+    return this.proveedorRepo.save(nuevoProveedor);
   }
 
-  findAll() {
-    return `This action returns all proveedor`;
+  findAll(): Promise<Proveedor[]> {
+    return this.proveedorRepo.find();
   }
 
   findOne(id: number) {
@@ -20,7 +29,7 @@ export class ProveedorService {
     return `This action updates a #${id} proveedor`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} proveedor`;
+  async remove(id: number): Promise<void> {
+    await this.proveedorRepo.delete(id);
   }
 }

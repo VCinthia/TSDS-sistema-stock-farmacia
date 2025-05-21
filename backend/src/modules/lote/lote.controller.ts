@@ -17,6 +17,7 @@ export class LoteController {
   }
 
   @Get()
+    @ApiOperation({ summary: 'Retorna todos los Lotes' })
   findAll() {
     return this.loteService.findAll();
   }

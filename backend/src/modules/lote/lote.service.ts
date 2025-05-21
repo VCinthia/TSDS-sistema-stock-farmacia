@@ -12,16 +12,16 @@ import { Sucursal } from 'src/entities/sucursal.entity';
 export class LoteService {
     constructor(
     @InjectRepository(Lote)
-    private readonly loteRepository: Repository<Lote>,
+    private readonly loteRepo: Repository<Lote>,
 
     @InjectRepository(Producto)
-    private readonly productoRepository: Repository<Producto>,
+    private readonly productoRepo: Repository<Producto>,
 
     @InjectRepository(Proveedor)
-    private readonly proveedorRepository: Repository<Proveedor>,
+    private readonly proveedorRepo: Repository<Proveedor>,
 
     @InjectRepository(Sucursal)
-    private readonly sucursalRepository: Repository<Sucursal>,
+    private readonly sucursalRepo: Repository<Sucursal>,
   ) {}
 
 
@@ -34,15 +34,15 @@ async create(createLoteDto: CreateLoteDto): Promise<Lote> {
   throw new BadRequestException('La fecha de vencimiento debe ser futura');
 }
 
-  const producto = await this.productoRepository.findOneBy({ id_producto });
-  const proveedor = await this.proveedorRepository.findOneBy({ id_proveedor });
-  const sucursal = await this.sucursalRepository.findOneBy({ id_sucursal });
+  const producto = await this.productoRepo.findOneBy({ id_producto });
+  const proveedor = await this.proveedorRepo.findOneBy({ id_proveedor });
+  const sucursal = await this.sucursalRepo.findOneBy({ id_sucursal });
 
   if (!producto || !proveedor || !sucursal) {
     throw new NotFoundException('Producto, Proveedor o Sucursal no encontrado');
   }
 
-  const lote = this.loteRepository.create({
+  const lote = this.loteRepo.create({
     fecha_vencimiento,
     cantidad,
     producto,
@@ -50,11 +50,11 @@ async create(createLoteDto: CreateLoteDto): Promise<Lote> {
     sucursal,
   });
 
-  return await this.loteRepository.save(lote);
+  return await this.loteRepo.save(lote);
 }
 
-  findAll() {
-    return `This action returns all lote`;
+  findAll(): Promise<Lote[]> {
+    return this.loteRepo.find();
   }
 
   findOne(id: number) {

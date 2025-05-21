@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from 
 import { SucursalService } from './sucursal.service';
 import { CreateSucursalDto } from './dto/create-sucursal.dto';
 import { UpdateSucursalDto } from './dto/update-sucursal.dto';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('sucursal')
 export class SucursalController {
@@ -13,6 +14,7 @@ export class SucursalController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Retorna todas las sucursales' })
   findAll() {
     return this.sucursalService.findAll();
   }
