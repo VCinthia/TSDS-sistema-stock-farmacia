@@ -1,5 +1,5 @@
 services:
-  mysql:
+  mysql-farmacia:  # <-- Nombre del servicio
     image: mysql:8.0.42
     container_name: mysql-farmacia
     restart: unless-stopped
@@ -12,7 +12,22 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./initdb/:/docker-entrypoint-initdb.d/  # <- Carpeta local mapeada
+      - ./initdb/:/docker-entrypoint-initdb.d  # <- Carpeta local mapeada
+    networks:
+      - backend-network
+
+  backend:  # Servicio para NestJS
+    build: ./backend  # Ruta a tu Dockerfile del backend
+    ports:
+      - "3000:3000"  # Mapeo de puertos (host:container)
+    volumes:
+      - ./backend:/app  # Monta el código fuente (para desarrollo)
+      - /app/node_modules  # Excluye node_modules del volumen
+    environment:
+      NODE_ENV: test   # antes development
+    command: npm run start:dev  # comando de inicio
+    depends_on:
+      - mysql-farmacia  # Espera a que MySQL esté listo    
     networks:
       - backend-network
 

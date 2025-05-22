@@ -149,3 +149,18 @@ ng serve
 
 - Las tablas se crean automáticamente con TypeORM (`synchronize: true`) durante el desarrollo.
 - En la etapa final del proyecto, se generará un `init.sql` para compartir una base con datos cargados.
+
+
+
+### Para detener y eliminar contenedor (Docker Compose)
+
+```bash
+docker-compose down -v   # 👈 borra los volúmenes (incluye la base)
+docker-compose up --build   #para volver a instalar nuevso cambios
+
+docker-compose up -d  
+
+
+docker ps
+docker logs <id-del-contenedor>
+```
