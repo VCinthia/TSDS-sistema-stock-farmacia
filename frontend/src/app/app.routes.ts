@@ -1,15 +1,16 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './shared/components/login/login.component';
+import { EstructuraPrincipalComponent } from './shared/components/estructura-principal/estructura-principal.component';
 
 export const routes: Routes = [
     {
         path: '',
         component: LoginComponent
     },
-    // {
-    //     path: 'inicio',
-    //     component: CircuitosComponent ,
-    // },
+    {
+        path: 'inicio',
+        component: EstructuraPrincipalComponent ,
+    },
     // {
     //     path: 'estudiosClinicos', component: MainLayoutComponent,
     //     children: [

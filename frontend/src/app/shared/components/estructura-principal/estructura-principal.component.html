@@ -1,1 +1,20 @@
-<p>estructura-principal works!</p>
+<mat-drawer-container class="container">
+    <mat-drawer mode="side" opened class="sidenav">
+        <div class="sidenavContainer">
+                @for (opcion of navLateralFarmaceutico; track opcion) {
+                    @if (opcion.nombre === 'Cerrar Sesión') {
+                        <a (click)="cerrarSesion()">{{opcion.nombre}}</a>
+                        } @else {
+                            <a [routerLink]="opcion.ruta">{{opcion.nombre}}</a>
+                        }
+                  }
+        </div>
+         
+    </mat-drawer>
+    <mat-drawer-content>
+        <div class="main-content">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>
+

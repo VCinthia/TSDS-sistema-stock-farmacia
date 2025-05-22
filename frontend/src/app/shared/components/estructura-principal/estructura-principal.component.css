@@ -1,0 +1,47 @@
+.container{
+    width: auto;
+    height: 100%;
+    background-color: var(--bg-color);
+}
+
+
+
+.sidenav{
+    background-color: var(--bg-color);
+    width: 18vw;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-right: 1px solid var(--color-accent);
+    border-radius: 0px;
+}
+
+.sidenavContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 30px 0 0 30px;
+}
+
+a{
+    font-size: 16px;
+    color: var(--color-primary);
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* a:last-child{
+    padding-top: 100px;
+} */
+
+.main-content{
+    padding-top: 1em;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 2 auto;
+    justify-content:flex-start;
+    align-items: center;
+    height: auto;
+    gap: 10px;
+}
