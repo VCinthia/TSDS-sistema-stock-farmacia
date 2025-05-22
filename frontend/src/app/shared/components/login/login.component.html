@@ -1,0 +1,20 @@
+<body>
+    <mat-card>
+        <h1>Bienvenido al Sistema</h1>
+        <mat-form-field appearance="outline">
+            <mat-label>Correo Electrónico</mat-label>
+             <input matInput
+                  [(ngModel)]="email" 
+                  >
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Contraseña</mat-label>
+            <input matInput
+                  [(ngModel)]="password" 
+                  [type]="hide ? 'password' : 'text'"
+                  >
+        </mat-form-field>
+        <app-boton-primario (click)="navegarAInicio()" [buttonText]="'Ingresar'"></app-boton-primario>
+        <!-- <app-btn-secondary [buttonText]="'¿Olvidaste tu contraseña?'"></app-btn-secondary>  -->
+    </mat-card>
+</body>
