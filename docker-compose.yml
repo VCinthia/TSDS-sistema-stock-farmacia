@@ -17,6 +17,7 @@ services:
       - backend-network
 
   backend:  # Servicio para NestJS
+    container_name: backend-farmacia
     build: ./backend  # Ruta a tu Dockerfile del backend
     ports:
       - "3000:3000"  # Mapeo de puertos (host:container)
