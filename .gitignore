@@ -1,0 +1,18 @@
+# IntelliJ IDEA / JetBrains
+.idea/
+*.iml
+modules.xml
+misc.xml
+vcs.xml
+
+
+# VSCode
+.vscode/
+
+# Node.js
+node_modules/
+dist/
+
+# Ignorar archivos temporales
+*.log
+*.tmp
