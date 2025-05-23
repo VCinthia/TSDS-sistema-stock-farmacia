@@ -1,7 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpCode } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { LoginUsuarioDto } from './dto/Login-usuario.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { API_MESSAGES } from 'common/constants/messages';
+import { ApiResponseDTO } from 'common/dto/api-response.dto';
+import { ResponseLoginUsuarioDto } from './dto/response-Login-usuario.dto';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -31,4 +36,13 @@ export class UsuarioController {
   remove(@Param('id') id: string) {
     return this.usuarioService.remove(+id);
   }
+
+  @Post('login')
+  @ApiOperation({ summary: 'Valida Credenciales de usuario' })
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.INFO.OK, type: ApiResponseDTO<ResponseLoginUsuarioDto>, })
+  async login(@Body() loginDto: LoginUsuarioDto): Promise<ApiResponseDTO<ResponseLoginUsuarioDto | null>> {
+  return await this.usuarioService.login(loginDto);
+}
+
 }
