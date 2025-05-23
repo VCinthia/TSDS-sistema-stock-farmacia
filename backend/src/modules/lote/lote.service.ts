@@ -10,6 +10,10 @@ import { getMethodName } from 'common/utils/method-name';
 import { ProductoService } from '../producto/producto.service';
 import { ProveedorService } from '../proveedor/proveedor.service';
 import { SucursalService } from '../sucursal/sucursal.service';
+import { MESSAGES } from '@nestjs/core/constants';
+import { API_MESSAGES } from 'common/constants/messages';
+import { plainToInstance } from 'class-transformer';
+import { ResponseLoteDto } from './dto/response-lote.dto';
 
 
 @Injectable()
@@ -26,7 +30,7 @@ export class LoteService {
 
 
 
-  async create(createLoteDto: CreateLoteDto): Promise<ApiResponseDTO<Lote | null>> {
+  async create(createLoteDto: CreateLoteDto): Promise<ApiResponseDTO<ResponseLoteDto | null>> {
     const { fecha_vencimiento, cantidad, id_producto, id_proveedor, id_sucursal } = createLoteDto;
      Logger.log('Inicio',getMethodName());
     try {
@@ -54,7 +58,11 @@ export class LoteService {
       });
 
       const savedLote = await this.loteRepo.save(lote);
-      return ApiResponseDTO.success('Lote creado exitosamente', savedLote);
+       const loteResp = plainToInstance(ResponseLoteDto, savedLote, {
+       excludeExtraneousValues: true, // Solo incluye los @Expose
+      });
+
+      return ApiResponseDTO.success(API_MESSAGES.LOTES.CREATED, loteResp);
 
     } catch (error) {
       Logger.error(`Error al crear lote: ${error.message}`, error.stack, getMethodName());

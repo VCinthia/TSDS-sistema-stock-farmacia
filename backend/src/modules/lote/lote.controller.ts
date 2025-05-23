@@ -6,6 +6,8 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Lote } from 'src/entities/lote.entity';
 import { ApiResponseDTO } from 'common/dto/api-response.dto';
 import { API_MESSAGES } from 'common/constants/messages';
+import { plainToInstance } from 'class-transformer';
+import { ResponseLoteDto } from './dto/response-lote.dto';
 
 @ApiTags('lote')
 @Controller('lote')
@@ -13,19 +15,15 @@ export class LoteController {
   constructor(private readonly loteService: LoteService) {}
 
   @Post()
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Crear un nuevo Lote' })
   @ApiBody({ type: CreateLoteDto })
-  @ApiResponse({ status: HttpStatus.CREATED, description: API_MESSAGES.LOTES.CREATED, type: ApiResponseDTO<Lote>, })
+  @ApiResponse({ status: HttpStatus.CREATED, description: API_MESSAGES.LOTES.CREATED, type: ApiResponseDTO<ResponseLoteDto>, })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Datos de entrada inválidos o fecha de vencimiento pasada', type: ApiResponseDTO<null>} )
-  async create(@Body() createLoteDto: CreateLoteDto): Promise<ApiResponseDTO<Lote | null>> {
+  async create(@Body() createLoteDto: CreateLoteDto): Promise<ApiResponseDTO<ResponseLoteDto | null>> {
       const lote = await this.loteService.create(createLoteDto);
       return lote;
-  
   }
-
-
-
 
 
   @Get()
