@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProveedorDto } from './dto/create-proveedor.dto';
 import { UpdateProveedorDto } from './dto/update-proveedor.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -21,10 +21,16 @@ export class ProveedorService {
     return this.proveedorRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} proveedor`;
+
+  async findOne(id: number): Promise<Proveedor> {
+    const proveedor = await this.proveedorRepo.findOneBy({ id_proveedor: id });
+      if (!proveedor) {
+        throw new NotFoundException(`Proveedor con ID ${id} no encontrado`);
+      }
+      return proveedor;
   }
 
+  
   update(id: number, updateProveedorDto: UpdateProveedorDto) {
     return `This action updates a #${id} proveedor`;
   }

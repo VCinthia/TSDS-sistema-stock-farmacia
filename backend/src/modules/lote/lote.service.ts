@@ -1,39 +1,34 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateLoteDto } from './dto/create-lote.dto';
 import { UpdateLoteDto } from './dto/update-lote.dto';
 import { Lote } from 'src/entities/lote.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Producto } from 'src/entities/producto.entity';
-import { Proveedor } from 'src/entities/proveedor.entity';
-import { Sucursal } from 'src/entities/sucursal.entity';
 import { ApiResponseDTO } from 'common/dto/api-response.dto';
-import { ArgumentOutOfRangeError } from 'rxjs';
 import { ErrorCodes } from 'common/constants/error-codes';
+import { getMethodName } from 'common/utils/method-name';
+import { ProductoService } from '../producto/producto.service';
+import { ProveedorService } from '../proveedor/proveedor.service';
+import { SucursalService } from '../sucursal/sucursal.service';
+
 
 @Injectable()
 export class LoteService {
-    private readonly logger = new Logger(LoteService.name);
 
     constructor(
     @InjectRepository(Lote)
     private readonly loteRepo: Repository<Lote>,
 
-    @InjectRepository(Producto)
-    private readonly productoRepo: Repository<Producto>,
-
-    @InjectRepository(Proveedor)
-    private readonly proveedorRepo: Repository<Proveedor>,
-
-    @InjectRepository(Sucursal)
-    private readonly sucursalRepo: Repository<Sucursal>,
+    private readonly productoService : ProductoService,
+    private readonly proveedorService : ProveedorService,
+    private readonly sucursalService : SucursalService,
   ) {}
 
 
 
   async create(createLoteDto: CreateLoteDto): Promise<ApiResponseDTO<Lote | null>> {
     const { fecha_vencimiento, cantidad, id_producto, id_proveedor, id_sucursal } = createLoteDto;
-
+     Logger.log('Inicio',getMethodName());
     try {
       // 1. Validación de fecha 
       const isDateValid = this.validateExpirationDate(fecha_vencimiento);
@@ -45,9 +40,9 @@ export class LoteService {
       }
 
       const [producto, proveedor, sucursal] = await Promise.all([
-        this.findProducto(id_producto),
-        this.findProveedor(id_proveedor),
-        this.findSucursal(id_sucursal),
+        this.productoService.findOne(id_producto),
+        this.proveedorService.findOne(id_proveedor),
+        this.sucursalService.findOne(id_sucursal),
       ]);
 
       const lote = this.loteRepo.create({
@@ -62,7 +57,7 @@ export class LoteService {
       return ApiResponseDTO.success('Lote creado exitosamente', savedLote);
 
     } catch (error) {
-      this.logger.error(`Error al crear lote: ${error.message}`, error.stack);
+      Logger.error(`Error al crear lote: ${error.message}`, error.stack, getMethodName());
       if(error instanceof NotFoundException){
         return ApiResponseDTO.error(
           error.message,
@@ -78,37 +73,10 @@ export class LoteService {
   }
 
 
-
-
   private validateExpirationDate(fecha: Date | string): boolean {
     const expirationDate = new Date(fecha);
     return expirationDate > new Date();
   }
-
-  private async findProducto(id: number): Promise<Producto> {
-    const producto = await this.productoRepo.findOneBy({ id_producto: id });
-    if (!producto) {
-      throw new NotFoundException(`Producto con ID ${id} no encontrado`);
-    }
-    return producto;
-  }
-
-  private async findProveedor(id: number): Promise<Proveedor> {
-    const proveedor = await this.proveedorRepo.findOneBy({ id_proveedor: id });
-    if (!proveedor) {
-      throw new NotFoundException(`Proveedor con ID ${id} no encontrado`);
-    }
-    return proveedor;
-  }
-
-  private async findSucursal(id: number): Promise<Sucursal> {
-    const sucursal = await this.sucursalRepo.findOneBy({ id_sucursal: id });
-    if (!sucursal) {
-      throw new NotFoundException(`Sucursal con ID ${id} no encontrada`);
-    }
-    return sucursal;
-  }
-
 
 
   findAll(): Promise<Lote[]> {

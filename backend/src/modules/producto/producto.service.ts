@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,9 +23,14 @@ export class ProductoService {
     return this.productoRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} producto`;
+  async findOne (id: number): Promise<Producto> {
+    const producto = await this.productoRepo.findOneBy({ id_producto: id });
+    if (!producto) {
+      throw new NotFoundException(`Producto con ID ${id} no encontrado`);
+      }
+    return producto;
   }
+  
 
   update(id: number, updateProductoDto: UpdateProductoDto) {
     return `This action updates a #${id} producto`;

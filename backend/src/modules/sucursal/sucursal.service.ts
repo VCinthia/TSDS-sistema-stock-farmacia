@@ -22,6 +22,17 @@ export class SucursalService {
     return this.sucursalRepo.find();
   }
 
+
+  async findOne(id: number): Promise<Sucursal> {
+    const sucursal = await this.sucursalRepo.findOneBy({ id_sucursal: id });
+    if (!sucursal) {
+      throw new NotFoundException(`Sucursal con ID ${id} no encontrada`);
+    }
+    return sucursal;
+  }
+
+
+
   async update(id: number, updateSucursalDto: UpdateSucursalDto) : Promise<Sucursal> {
     await this.sucursalRepo.update(id, updateSucursalDto);
     const updated = await this.sucursalRepo.findOneBy({ id_sucursal: id });
