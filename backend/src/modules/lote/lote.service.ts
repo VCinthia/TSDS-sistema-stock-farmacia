@@ -10,10 +10,10 @@ import { getMethodName } from 'common/utils/method-name';
 import { ProductoService } from '../producto/producto.service';
 import { ProveedorService } from '../proveedor/proveedor.service';
 import { SucursalService } from '../sucursal/sucursal.service';
-import { MESSAGES } from '@nestjs/core/constants';
 import { API_MESSAGES } from 'common/constants/messages';
 import { plainToInstance } from 'class-transformer';
 import { ResponseLoteDto } from './dto/response-lote.dto';
+import { ResponseLoteDetalleDto } from './dto/response-lote-detalle.dto';
 
 
 @Injectable()
@@ -87,17 +87,78 @@ export class LoteService {
   }
 
 
-  findAll(): Promise<Lote[]> {
-    return this.loteRepo.find();
-  }
+async findAll(): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
+  try {
+    const lotes = await this.loteRepo.find({
+      relations: ['producto', 'proveedor', 'sucursal'], // para incluir relaciones necesarias
+    });
 
-  findOne(id: number) {
-    return `This action returns a #${id} lote`;
-  }
+    const lotesDto = plainToInstance(ResponseLoteDto, lotes, {
+      excludeExtraneousValues: true,
+    });
 
-  update(id: number, updateLoteDto: UpdateLoteDto) {
-    return `This action updates a #${id} lote`;
+    if(lotesDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, lotesDto);
+    }
+    return ApiResponseDTO.success(API_MESSAGES.LOTES.ALL, lotesDto);
+  } catch (error) {
+    Logger.error(`Error al obtener lotes: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
   }
+}
+
+
+
+async findOne(id: number): Promise<ApiResponseDTO<ResponseLoteDto | null>> {
+  try {
+    const lote = await this.loteRepo.findOne({
+      where: { id_lote: id },
+      relations: ['producto', 'proveedor', 'sucursal'],
+    });
+
+    if (!lote) {
+      return ApiResponseDTO.error(API_MESSAGES.LOTES.NOT_FOUND, ErrorCodes.NOT_FOUND);
+    }
+
+    const loteDto = plainToInstance(ResponseLoteDto, lote, {
+      excludeExtraneousValues: true,
+    });
+
+    return ApiResponseDTO.success(API_MESSAGES.INFO.OK, loteDto);
+  } catch (error) {
+    Logger.error(`Error al obtener el lote: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
+  }
+}
+
+
+
+async update(id: number, updateLoteDto: UpdateLoteDto): Promise<ApiResponseDTO<ResponseLoteDto | null>> {
+  try {
+    const lote = await this.loteRepo.findOne({
+      where: { id_lote: id }});
+
+    if (!lote) {
+      return ApiResponseDTO.error(API_MESSAGES.LOTES.NOT_FOUND, ErrorCodes.NOT_FOUND);
+    }
+
+    // Actualizar campos (solo si vienen en el DTO)
+    Object.assign(lote, updateLoteDto);
+
+    const updatedLote = await this.loteRepo.save(lote);
+
+    const loteDto = plainToInstance(ResponseLoteDto, updatedLote, {
+      excludeExtraneousValues: true,
+    });
+
+    return ApiResponseDTO.success(API_MESSAGES.LOTES.UPDATED, loteDto);
+  } catch (error) {
+    Logger.error(`Error al actualizar lote: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
+  }
+}
+
+
 
   remove(id: number) {
     return `This action removes a #${id} lote`;
