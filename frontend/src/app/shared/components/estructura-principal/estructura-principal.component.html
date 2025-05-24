@@ -1,6 +1,6 @@
-<mat-drawer-container class="container">
+<mat-drawer-container class="contenedor">
     <mat-drawer mode="side" opened class="sidenav">
-        <div class="sidenavContainer">
+        <div class="sidenavContenedor">
                 @for (opcion of navLateralFarmaceutico; track opcion) {
                     @if (opcion.nombre === 'Cerrar Sesión') {
                         <a (click)="cerrarSesion()">{{opcion.nombre}}</a>
@@ -12,7 +12,7 @@
          
     </mat-drawer>
     <mat-drawer-content>
-        <div class="main-content">
+        <div class="contenidoPrincipal">
             <router-outlet></router-outlet>
         </div>
     </mat-drawer-content>
