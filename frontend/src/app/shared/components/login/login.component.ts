@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { BotonPrimarioComponent } from '../boton-primario/boton-primario.component'
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
+import { LoginService } from '../../../../services/login/login.service';
+import { UsuarioDTO } from '../../../../core/dtos/usuario.dto';
+import { UsuarioService } from '../../../../services/usuario/usuario.service';
 
 
 @Component({
@@ -24,6 +27,7 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent {
 
   hide = true;
+  error: string | null = null;
   // usuarioLogeado = new UsuarioDTO;
   email: string = "";
   password: string = "";
@@ -31,20 +35,29 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private toastr: ToastrService,
+    private loginService: LoginService,
+    private usuarioService: UsuarioService
 
   ) { }
 
-
-
   navegarAInicio() {
     if (this.email && this.password) {
-      this.toastr.success('Ingreso correcto')
-      this.router.navigate(['/inicio']);
-      // this.login(this.username, this.password);
+      this.loginService.login(this.email, this.password).subscribe({
+        next: (response: any) => {
+          const usuario: UsuarioDTO = response.data;
+          this.error = null;
+          this.usuarioService.setUsuario(usuario);
+          this.toastr.success('Bienvenido ' + usuario.nombre);
+          this.router.navigate(['/inicio']);
+        },
+        error: () => {
+          this.error = 'Credenciales incorrectas';
+          this.toastr.error(this.error);
+        }
+      });
     } else {
       this.toastr.warning('Debe ingresar su correo electrónico y contraseña');
     }
-
   }
 
   // clickEvent(event: MouseEvent) {

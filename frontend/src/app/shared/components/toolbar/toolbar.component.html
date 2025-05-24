@@ -4,4 +4,10 @@
         <h2>Sistema</h2>
         <h2>de Stock para Farmacias</h2>
     </div>
+    <span class="usuarioInfo" *ngIf="usuarioLogeado">
+        <h2>
+            {{ usuarioLogeado!.nombre }} - {{ usuarioLogeado!.rol }}
+            <button mat-button color="warn" (click)="cerrarSesion()">Cerrar sesión</button>
+        </h2>
+    </span>
 </mat-toolbar>

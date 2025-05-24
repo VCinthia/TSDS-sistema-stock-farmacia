@@ -3,16 +3,18 @@
         <h1>Bienvenido al Sistema</h1>
         <mat-form-field appearance="outline">
             <mat-label>Correo Electrónico</mat-label>
-             <input matInput
-                  [(ngModel)]="email" 
-                  >
-          </mat-form-field>
-          <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="email" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
             <mat-label>Contraseña</mat-label>
             <input matInput
-                  [(ngModel)]="password" 
-                  [type]="hide ? 'password' : 'text'"
-                  >
+                [(ngModel)]="password" required 
+                [type]="hide ? 'password' : 'text'"
+            >
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Toggle password visibility'"
+                type="button">
+                <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
         </mat-form-field>
         <app-boton-primario (click)="navegarAInicio()" [buttonText]="'Ingresar'"></app-boton-primario>
         <!-- <app-btn-secondary [buttonText]="'¿Olvidaste tu contraseña?'"></app-btn-secondary>  -->

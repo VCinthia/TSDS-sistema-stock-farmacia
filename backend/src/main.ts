@@ -15,7 +15,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
+  
   app.useGlobalFilters(new HttpExceptionFilter()); //Filtro de Exceptions
   await app.listen(Number(process.env.NEST_PORT));
   

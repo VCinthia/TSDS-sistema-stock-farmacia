@@ -1,0 +1,4 @@
+export enum eRol {
+    ROL_FARMACEUTICO = 'FARMACÉUTICO',
+    ROL_ADMINISTRADOR = 'ADMINISTRADOR',
+}

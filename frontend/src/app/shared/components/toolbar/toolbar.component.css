@@ -13,3 +13,19 @@ mat-toolbar{
 mat-toolbar h2{
     font-weight: 600;
 }
+
+.usuarioInfo {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 30px;
+}
+
+.usuarioInfo h2 {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+}
