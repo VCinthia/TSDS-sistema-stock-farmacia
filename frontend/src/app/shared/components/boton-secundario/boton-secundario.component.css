@@ -1,6 +1,6 @@
 button{
-    background-color: var(--color-accent);
-    color: #FFFFFF;
+    background-color: var(--color-secundario-claro);
+    color: #000000;
     height: 100%;
     width: 100%;
     font-size: 16px;
@@ -11,7 +11,7 @@ button{
 }
 
 button:hover{
-    background-color: var(--color-accent-50);
+    background-color: var(--color-secundario);
     opacity: 0.8;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }

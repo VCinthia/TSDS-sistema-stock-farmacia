@@ -1,0 +1,58 @@
+<div class="formContainer">
+    <h2>Agregar lote</h2>
+    <mat-form-field>
+        <mat-label>Seleccione producto</mat-label>
+        <mat-select [formControl]="producto" required>
+            <mat-option value="ibu400mg">Ibuprofeno 400mg</mat-option>
+            <mat-option value="ibu600mg">Ibuprofeno 600mg</mat-option>
+            <mat-option value="amox600mg">Amoxicilina 600mg</mat-option>
+        </mat-select>
+        @if (producto.hasError('required')) {
+        <mat-error>Por favor, elija un producto</mat-error>
+        }
+    </mat-form-field>
+     <mat-form-field>
+        <mat-label>Seleccione proveedor</mat-label>
+        <mat-select [formControl]="proveedor" required>
+            <mat-option value="prov1">Proveedor 1</mat-option>
+            <mat-option value="prov2">Proveedor 2</mat-option>
+            <mat-option value="prov3">Proveedor 3</mat-option>
+        </mat-select>
+        @if (proveedor.hasError('required')) {
+        <mat-error>Por favor, elija un proveedor</mat-error>
+        }
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Cantidad</mat-label>
+        <input matInput [formControl]="cantidad">
+        @if (cantidad.hasError('required')) {
+        <mat-error>Por favor, complete este campo</mat-error>
+        }
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Fecha de vencimiento</mat-label>
+        <input matInput [formControl]="fechaVenc" type="date">
+        @if (fechaVenc.hasError('required')) {
+        <mat-error>Por favor, complete este campo</mat-error>
+        }
+    </mat-form-field>
+     <mat-form-field>
+        <mat-label>Seleccione sucursal</mat-label>
+        <mat-select [formControl]="sucursal" required>
+            <mat-option value="suc1">Sucursal central</mat-option>
+            <mat-option value="suc2">Sucursal Norte</mat-option>
+        </mat-select>
+        @if (sucursal.hasError('required')) {
+        <mat-error>Por favor, elija un proveedor</mat-error>
+        }
+    </mat-form-field>
+   
+    <div class="btnContainer">
+        <app-boton-secundario (click)="cerrarModal()" buttonText="Cancelar"></app-boton-secundario>
+        @if (producto.hasError('required') || proveedor.hasError('required') || cantidad.hasError('required') || fechaVenc.hasError('pattern') || fechaVenc.hasError('required') || sucursal.hasError('required')) {
+          <app-boton-inactivo buttonText="Agregar Lote"></app-boton-inactivo>
+        } @else {
+          <app-boton-primario (click)="agregarLote()" buttonText="Agregar Lote"></app-boton-primario>
+        }
+    </div>
+</div>

@@ -19,17 +19,19 @@ interface NavLateral {
 export class EstructuraPrincipalComponent {
 
    navLateralFarmaceutico: NavLateral[] = [
-    { nombre: 'Inicio', ruta: 'inicio' },
-    { nombre: 'Gestión de Inventario', ruta: 'gestionInventario' },
+    { nombre: 'Inicio', ruta: '/inicio' },
+    { nombre: 'Gestión de Inventario', ruta: 'gestionarInventario' },
     { nombre: 'Alertas', ruta: 'alertas' },
     { nombre: 'Ventas', ruta: 'ventas' },
+    {nombre: 'Cerrar Sesión', ruta: ''}
   ];
 
  navLateralAdministrativo: NavLateral[] = [
-    { nombre: 'Inicio', ruta: 'inicio' },
+    { nombre: 'Inicio', ruta: '/inicio' },
     { nombre: 'Reportes y Análisis', ruta: 'reportesAnalisis' },
     { nombre: 'Fidelización de Clientes', ruta: 'fidelizacion' },
     { nombre: 'Cumplimiento Sanitario', ruta: 'cumplimientoSanitario' },
+    {nombre: 'Cerrar Sesión', ruta: ''}
   ];
 
   currentRoute: string | undefined;
@@ -61,6 +63,7 @@ export class EstructuraPrincipalComponent {
     //   width: '400px',
     //   height: '250px'
     // });
+    this.router.navigate(['']);
   }
 
 }

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './shared/components/login/login.component';
 import { EstructuraPrincipalComponent } from './shared/components/estructura-principal/estructura-principal.component';
+import { GestionInventarioComponent } from './shared/components/gestion-inventario/gestion-inventario.component';
 
 export const routes: Routes = [
     {
@@ -9,7 +10,10 @@ export const routes: Routes = [
     },
     {
         path: 'inicio',
-        component: EstructuraPrincipalComponent ,
+        component: EstructuraPrincipalComponent,
+        children: [
+            {path: 'gestionarInventario', component: GestionInventarioComponent,}
+        ]
     },
     // {
     //     path: 'estudiosClinicos', component: MainLayoutComponent,

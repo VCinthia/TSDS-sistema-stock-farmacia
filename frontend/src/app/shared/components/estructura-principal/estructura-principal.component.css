@@ -1,4 +1,4 @@
-.container{
+.contenedor{
     width: auto;
     height: 100%;
     background-color: var(--bg-color);
@@ -16,7 +16,7 @@
     border-radius: 0px;
 }
 
-.sidenavContainer{
+.sidenavContenedor{
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -31,17 +31,19 @@ a{
     cursor: pointer;
 }
 
-/* a:last-child{
+a:last-child{
     padding-top: 100px;
-} */
+}
 
-.main-content{
-    padding-top: 1em;
+.contenidoPrincipal{
+    /* padding-top: 1em;
     display: flex;
     flex-direction: column;
     flex: 1 1 2 auto;
     justify-content:flex-start;
     align-items: center;
     height: auto;
-    gap: 10px;
+    gap: 10px; */
+    padding: 50px;
+    text-align: center;
 }
