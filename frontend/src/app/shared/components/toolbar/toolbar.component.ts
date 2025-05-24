@@ -23,12 +23,6 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
     this.usuarioService.usuario$.subscribe(usuario => {
       this.usuarioLogeado = usuario;
-      console.log('Usuario recibido en Toolbar:', usuario);
     });
-  }
-
-  cerrarSesion(): void {
-    this.usuarioService.logout();
-    this.router.navigate(['/']);
   }
 }

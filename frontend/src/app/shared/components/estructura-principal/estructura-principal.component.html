@@ -13,6 +13,7 @@
     </mat-drawer>
     <mat-drawer-content>
         <div class="contenidoPrincipal">
+            <h1 *ngIf="mostrarBienvenida">Te damos la bienvenida al sistema</h1>
             <router-outlet></router-outlet>
         </div>
     </mat-drawer-content>
