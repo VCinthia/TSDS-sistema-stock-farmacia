@@ -44,15 +44,21 @@ export class LoginComponent {
     if (this.email && this.password) {
       this.loginService.login(this.email, this.password).subscribe({
         next: (response: any) => {
+          if (!response.success || !response.data) {
+            this.toastr.error(response.message || 'Credenciales incorrectas');
+            return;
+          }
+
           const usuario: UsuarioDTO = response.data;
           this.error = null;
           this.usuarioService.setUsuario(usuario);
           this.toastr.success('Bienvenido ' + usuario.nombre);
           this.router.navigate(['/inicio']);
         },
-        error: () => {
-          this.error = 'Credenciales incorrectas';
+        error: (err) => {
+          this.error = 'Error inesperado al iniciar sesión';
           this.toastr.error(this.error);
+          console.error('Login error:', err);
         }
       });
     } else {
