@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import {Router, RouterOutlet, RouterLink} from '@angular/router';
+import {Router, RouterOutlet, RouterLink, NavigationEnd} from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
+import { UsuarioDTO } from '../../../../core/dtos/usuario.dto';
+import { UsuarioService } from '../../../../services/usuario/usuario.service';
+import { filter } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
 
 interface NavLateral {
   nombre: string;
@@ -12,11 +15,15 @@ interface NavLateral {
 @Component({
   selector: 'app-estructura-principal',
   standalone: true,
-  imports: [MatSidenavModule, RouterOutlet, RouterLink],
+  imports: [MatSidenavModule, RouterOutlet, RouterLink, CommonModule],
   templateUrl: './estructura-principal.component.html',
   styleUrl: './estructura-principal.component.css'
 })
-export class EstructuraPrincipalComponent {
+export class EstructuraPrincipalComponent implements OnInit {
+
+  mostrarBienvenida = false;
+
+  usuarioLogeado: UsuarioDTO | null = null;
 
    navLateralFarmaceutico: NavLateral[] = [
     { nombre: 'Inicio', ruta: '/inicio' },
@@ -41,6 +48,7 @@ export class EstructuraPrincipalComponent {
   constructor(
     private toastr: ToastrService,
     private router: Router,
+    private usuarioService: UsuarioService,
   ) {
     this.router.events.subscribe(() => {
       this.currentRoute = this.router.url;
@@ -49,7 +57,18 @@ export class EstructuraPrincipalComponent {
 
   ngOnInit(): void {
     this.currentRoute = this.router.url;
+    this.usuarioService.usuario$.subscribe(usuario => {
+      this.usuarioLogeado = usuario;
+      console.log('Usuario recibido en Sidenav:', usuario);
+    });
     this.configurarNavLateral();
+    
+    this.mostrarBienvenida = this.router.url === '/inicio';
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.mostrarBienvenida = event.urlAfterRedirects === '/inicio';
+    });
   }
 
    configurarNavLateral(): void {
@@ -59,11 +78,13 @@ export class EstructuraPrincipalComponent {
   }
 
   cerrarSesion(): void {
-    // const dialogRef = this.dialog.open(DialogCerrarSesionComponent, {
-    //   width: '400px',
-    //   height: '250px'
-    // });
-    this.router.navigate(['']);
+    this.usuarioService.logout();
+    this.router.navigate(['/']);
   }
-
 }
+
+
+
+  
+
+  

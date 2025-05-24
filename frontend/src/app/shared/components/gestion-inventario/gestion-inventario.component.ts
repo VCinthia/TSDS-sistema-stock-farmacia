@@ -28,7 +28,7 @@ export class GestionInventarioComponent {
   }
 
   producto: string = "";
-  columnas: string[] = ['codigo', 'nombre', 'categoria', 'stock', 'sucursal', 'precio', 'accion'];
+  columnas: string[] = ['codigo', 'nombre', 'categoria', 'stock', 'sucursal', 'precio'];
 
   dataSource = [
     {
