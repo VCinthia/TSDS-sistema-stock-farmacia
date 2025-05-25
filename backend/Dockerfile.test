@@ -1,0 +1,16 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+# Copia explícitamente el archivo de entorno de test
+COPY .env.test .env.test
+
+# Copia el resto del código fuente
+COPY . .
+
+ENV NODE_ENV=test
+
+CMD ["npm", "run", "test:e2e"]
