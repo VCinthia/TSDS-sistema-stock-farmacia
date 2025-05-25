@@ -34,6 +34,7 @@ Desde la raíz del proyecto:
 ```bash
 docker-compose run --rm test
 ```
+![image](https://github.com/user-attachments/assets/ac2c4c55-cda9-41ef-95cb-2b4d5d433e3a)
 
 > Este comando ejecuta los tests y luego elimina el contenedor (`--rm`).
 
