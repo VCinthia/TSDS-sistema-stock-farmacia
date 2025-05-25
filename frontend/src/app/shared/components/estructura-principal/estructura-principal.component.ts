@@ -6,6 +6,8 @@ import { UsuarioDTO } from '../../../../core/dtos/usuario.dto';
 import { UsuarioService } from '../../../../services/usuario/usuario.service';
 import { filter } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { DialogoCerrarSesionComponent } from '../dialogo-cerrar-sesion/dialogo-cerrar-sesion.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 interface NavLateral {
   nombre: string;
@@ -15,7 +17,7 @@ interface NavLateral {
 @Component({
   selector: 'app-estructura-principal',
   standalone: true,
-  imports: [MatSidenavModule, RouterOutlet, RouterLink, CommonModule],
+  imports: [MatSidenavModule, RouterOutlet, RouterLink, CommonModule, DialogoCerrarSesionComponent, MatDialogModule],
   templateUrl: './estructura-principal.component.html',
   styleUrl: './estructura-principal.component.css'
 })
@@ -49,6 +51,7 @@ export class EstructuraPrincipalComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private usuarioService: UsuarioService,
+    private dialog: MatDialog,
   ) {
     this.router.events.subscribe(() => {
       this.currentRoute = this.router.url;
@@ -78,8 +81,17 @@ export class EstructuraPrincipalComponent implements OnInit {
   }
 
   cerrarSesion(): void {
-    this.usuarioService.logout();
-    this.router.navigate(['/']);
+    const ref = this.dialog.open(DialogoCerrarSesionComponent, {
+      width: '400px',
+      height: '200px'
+    });
+
+    ref.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.usuarioService.logout();
+        this.router.navigateByUrl('');
+      }
+    });
   }
 }
 

@@ -1,7 +1,9 @@
 .contenedor{
     width: auto;
-    height: 100%;
+    max-height: calc(100vh - 90px);
     background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -14,6 +16,7 @@
     gap: 20px;
     border-right: 1px solid var(--color-accent);
     border-radius: 0px;
+    height: calc(100vh - 90px);
 }
 
 .sidenavContenedor{
@@ -35,15 +38,18 @@ a:last-child{
     padding-top: 100px;
 }
 
+mat-drawer-content {
+  flex: 1;                
+  display: flex;
+  flex-direction: column;
+}
+
 .contenidoPrincipal{
-    /* padding-top: 1em;
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 2 auto;
-    justify-content:flex-start;
-    align-items: center;
-    height: auto;
-    gap: 10px; */
+    flex: 1;                 
+    overflow-y: auto;     
+    box-sizing: border-box;
     padding: 50px;
     text-align: center;
+    height: auto;
+    min-height: calc(100vh - 90px);
 }
