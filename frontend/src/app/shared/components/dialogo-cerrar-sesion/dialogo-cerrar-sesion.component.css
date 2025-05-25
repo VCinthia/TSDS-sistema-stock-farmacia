@@ -1,0 +1,15 @@
+
+app-boton-primario, app-boton-secundario{
+    width: 120px;
+    height: 40px;
+}
+
+mat-dialog-actions{
+    align-self: center;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+h2, mat-dialog-content{
+    align-self: center;
+}
