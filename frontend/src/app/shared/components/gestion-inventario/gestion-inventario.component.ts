@@ -8,16 +8,25 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
 import { AgregarLoteFormComponent } from '../agregar-lote-form/agregar-lote-form.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIcon } from '@angular/material/icon';
+import { ProductoDTO } from '../../../../core/dtos/producto.dto';
+import { ProductoService } from '../../../../services/producto/producto.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-gestion-inventario',
-  imports: [BotonPrimarioComponent, BotonSecundarioComponent, MatInputModule, FormsModule, MatTableModule, MatButtonModule, MatCard],
+  imports: [BotonPrimarioComponent, BotonSecundarioComponent, MatInputModule, FormsModule, MatTableModule, MatButtonModule, MatCard, MatIcon],
   templateUrl: './gestion-inventario.component.html',
   styleUrl: './gestion-inventario.component.css'
 })
 export class GestionInventarioComponent {
 
-  constructor(public dialog: MatDialog) {}
+  productoId: string | undefined;
+  producto: ProductoDTO | null = null;
+  error: string | null = null;
+  dataSource: ProductoDTO[] = [];
+
+  constructor(public dialog: MatDialog, private productoService: ProductoService, private toastr: ToastrService) {}
 
   abrirFormAgregarLote(): void {
     const dialogRef = this.dialog.open(AgregarLoteFormComponent, {
@@ -27,33 +36,23 @@ export class GestionInventarioComponent {
 
   }
 
-  producto: string = "";
   columnas: string[] = ['codigo', 'nombre', 'categoria', 'stock', 'sucursal', 'precio'];
 
-  dataSource = [
-    {
-      codigo: '2f1c8bca',
-      nombre: 'Ibuprofeno 400mg',
-      categoria: 'Analgésico',
-      stock: 6,
-      sucursal: 'Central',
-      precio: 2000.5
-    },
-    {
-      codigo: '3f8c8ced',
-      nombre: 'Amoxicilina 500mg',
-      categoria: 'Antibiótico',
-      stock: 4,
-      sucursal: 'Sucursal Norte',
-      precio: 4000.5
-    },
-    {
-      codigo: '7h8c9jhf',
-      nombre: 'Omeprazol 20mg',
-      categoria: 'Digestivo',
-      stock: 9,
-      sucursal: 'Central',
-      precio: 2000.5
-    }
-  ];
+  buscarProducto() {
+    if (!this.productoId) return;
+
+    this.productoService.getProducto(this.productoId).subscribe({
+      next: (data) => {
+        this.producto = data;
+        this.error = null;
+        this.dataSource = [this.producto];
+      },
+      error: (err) => {
+        this.producto = null;
+        this.error = 'Producto no encontrado';
+        this.toastr.error(this.error);
+        console.error(err);
+      }
+    });
+  }
 }
