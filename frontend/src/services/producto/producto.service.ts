@@ -16,4 +16,8 @@ export class ProductoService {
   const url = `${this.BASE_URL}/producto`;
   return this.http.get<ProductoDTO[]>(url);
 }
+  getProducto(id: string):Observable<ProductoDTO> {
+  const url = `${this.BASE_URL}/producto/${id}`;
+  return this.http.get<ProductoDTO>(url);
+}
 }

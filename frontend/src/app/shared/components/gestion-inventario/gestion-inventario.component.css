@@ -8,6 +8,9 @@ app-boton-primario, app-boton-secundario{
     height: 56px;
 }
 
+.boton-buscar{
+    width: 130px;
+}
 
 .contenedorBotonLote{
     display: flex;
