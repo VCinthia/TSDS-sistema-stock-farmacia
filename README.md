@@ -152,15 +152,19 @@ ng serve
 
 
 
-### Para detener y eliminar contenedor (Docker Compose)
+### COMANDOS AUXILIARES
 
 ```bash
+#para detener y eliminar contenedor (Docker Compose)
 docker-compose down -v   # 👈 borra los volúmenes (incluye la base)
 docker-compose up --build   #para volver a instalar nuevso cambios
-
 docker-compose up -d  
 
-
+#Ver contenedores y Log de docker
 docker ps
 docker logs <id-del-contenedor>
+
+#Levantar Backend LocalHost
+npm run start:dev  #desde el módulo Backend, pre requisito debe de estar corriendo La DDBB "MySqlFarmacia"
+
 ```

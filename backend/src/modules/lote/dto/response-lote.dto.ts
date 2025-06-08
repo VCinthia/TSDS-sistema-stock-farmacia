@@ -7,6 +7,9 @@ export class ProductoDto {
 
   @Expose()
   nombre: string;
+  
+  @Expose()
+  precio_unitario: string;
 }
 
 export class ProveedorDto {
