@@ -1,0 +1,331 @@
+[
+  {
+    "codigo": "2001",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0005", "nombre": "Enalapril 10mg tableta", "cantidad": 1},
+        {"codigo": "MED-0009", "nombre": "Amoxicilina 500mg tableta", "cantidad": 20}
+      ],
+      "dniPaciente": "30123456",
+      "matriculaMedico": "12345",
+      "emision": "2025-06-08",
+      "expiracion": "2025-07-08",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2002",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0006", "nombre": "Antialérgico Loratadina 10mg tableta", "cantidad": 10}
+      ],
+      "dniPaciente": "30234567",
+      "matriculaMedico": "67890",
+      "emision": "2025-06-09",
+      "expiracion": "2025-07-09",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2003",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0007", "nombre": "Interferón Alfa 2B ampolla", "cantidad": 1},
+        {"codigo": "MED-0012", "nombre": "Adalimumab 40mg jeringa precargada", "cantidad": 1}
+      ],
+      "dniPaciente": "30345678",
+      "matriculaMedico": "54321",
+      "emision": "2025-06-10",
+      "expiracion": "2025-07-10",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2004",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0010", "nombre": "Metformina 850mg tableta", "cantidad": 30}
+      ],
+      "dniPaciente": "30456789",
+      "matriculaMedico": "98765",
+      "emision": "2025-06-11",
+      "expiracion": "2025-07-11",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2005",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0006", "nombre": "Antialérgico Loratadina 10mg tableta", "cantidad": 14},
+        {"codigo": "MED-0011", "nombre": "Lisinopril 10mg tableta", "cantidad": 1}
+      ],
+      "dniPaciente": "30123456",
+      "matriculaMedico": "13579",
+      "emision": "2025-06-12",
+      "expiracion": "2025-07-12",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2006",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0008", "nombre": "Rituximab 100mg vial", "cantidad": 2}
+      ],
+      "dniPaciente": "30234567",
+      "matriculaMedico": "24680",
+      "emision": "2025-06-08",
+      "expiracion": "2025-07-08",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2007",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": false,
+      "detalle": [
+        {"codigo": "MED-0005", "nombre": "Enalapril 10mg tableta", "cantidad": 1},
+        {"codigo": "MED-0006", "nombre": "Antialérgico Loratadina 10mg tableta", "cantidad": 7}
+      ],
+      "dniPaciente": "30345678",
+      "matriculaMedico": "11223",
+      "emision": "2025-05-09",
+      "expiracion": "2025-06-09",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2008",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0012", "nombre": "Adalimumab 40mg jeringa precargada", "cantidad": 1},
+        {"codigo": "MED-0007", "nombre": "Interferón Alfa 2B ampolla", "cantidad": 1}
+      ],
+      "dniPaciente": "30456789",
+      "matriculaMedico": "33445",
+      "emision": "2025-06-10",
+      "expiracion": "2025-07-10",
+      "utilizada": true
+    }
+  },
+  {
+    "codigo": "2009",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0009", "nombre": "Amoxicilina 500mg tableta", "cantidad": 20}
+      ],
+      "dniPaciente": "30123456",
+      "matriculaMedico": "55667",
+      "emision": "2025-06-11",
+      "expiracion": "2025-07-11",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2010",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0010", "nombre": "Metformina 850mg tableta", "cantidad": 30},
+        {"codigo": "MED-0006", "nombre": "Antialérgico Loratadina 10mg tableta", "cantidad": 10}
+      ],
+      "dniPaciente": "30234567",
+      "matriculaMedico": "77889",
+      "emision": "2025-06-12",
+      "expiracion": "2025-07-12",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2011",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0008", "nombre": "Rituximab 100mg vial", "cantidad": 1}
+      ],
+      "dniPaciente": "30345678",
+      "matriculaMedico": "99000",
+      "emision": "2025-06-08",
+      "expiracion": "2025-07-08",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2012",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": false,
+      "detalle": [
+        {"codigo": "MED-0011", "nombre": "Lisinopril 10mg tableta", "cantidad": 1},
+        {"codigo": "MED-0005", "nombre": "Enalapril 10mg tableta", "cantidad": 1}
+      ],
+      "dniPaciente": "30456789",
+      "matriculaMedico": "11111",
+      "emision": "2025-06-09",
+      "expiracion": "2025-07-09",
+      "utilizada": true
+    }
+  },
+  {
+    "codigo": "2013",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0007", "nombre": "Interferón Alfa 2B ampolla", "cantidad": 1}
+      ],
+      "dniPaciente": "30123456",
+      "matriculaMedico": "22222",
+      "emision": "2025-06-10",
+      "expiracion": "2025-07-10",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2014",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0006", "nombre": "Antialérgico Loratadina 10mg tableta", "cantidad": 5},
+        {"codigo": "MED-0013", "nombre": "Eculizumab 300mg vial", "cantidad": 1}
+      ],
+      "dniPaciente": "30234567",
+      "matriculaMedico": "33333",
+      "emision": "2025-06-11",
+      "expiracion": "2025-07-11",
+      "utilizada": true
+    }
+  },
+  {
+    "codigo": "2015",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": false,
+      "detalle": [
+        {"codigo": "MED-0005", "nombre": "Enalapril 10mg tableta", "cantidad": 2}
+      ],
+      "dniPaciente": "30345678",
+      "matriculaMedico": "44444",
+      "emision": "2025-06-12",
+      "expiracion": "2025-07-12",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2016",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0010", "nombre": "Metformina 850mg tableta", "cantidad": 20},
+        {"codigo": "MED-0006", "nombre": "Antialérgico Loratadina 10mg tableta", "cantidad": 5}
+      ],
+      "dniPaciente": "30456789",
+      "matriculaMedico": "55555",
+      "emision": "2025-06-08",
+      "expiracion": "2025-07-08",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2017",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0008", "nombre": "Rituximab 100mg vial", "cantidad": 1}
+      ],
+      "dniPaciente": "30123456",
+      "matriculaMedico": "66666",
+      "emision": "2025-06-09",
+      "expiracion": "2025-07-09",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2018",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0009", "nombre": "Amoxicilina 500mg tableta", "cantidad": 14}
+      ],
+      "dniPaciente": "30234567",
+      "matriculaMedico": "77777",
+      "emision": "2025-06-10",
+      "expiracion": "2025-07-10",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2019",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0011", "nombre": "Lisinopril 10mg tableta", "cantidad": 1}
+      ],
+      "dniPaciente": "30345678",
+      "matriculaMedico": "88888",
+      "emision": "2025-06-11",
+      "expiracion": "2025-07-11",
+      "utilizada": false
+    }
+  },
+  {
+    "codigo": "2020",
+    "success": true,
+    "codeError": 0,
+    "data": {
+      "valida": true,
+      "detalle": [
+        {"codigo": "MED-0013", "nombre": "Eculizumab 300mg vial", "cantidad": 1}
+      ],
+      "dniPaciente": "30456789",
+      "matriculaMedico": "99999",
+      "emision": "2025-06-12",
+      "expiracion": "2025-07-12",
+      "utilizada": false
+    }
+  }
+]
