@@ -1,31 +1,20 @@
-import { IsDateString, IsInt, IsOptional } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsDateString, IsInt, IsOptional, IsString, ValidateNested } from "class-validator";
+import { ProductoVentaDto } from "./producto-venta.dto";
 
 export class CreateVentaDto {
-  @IsDateString()
-  fecha: string;
-
-  @IsInt()
-  subtotal: number;
-
-  @IsInt()
-  puntos_cliente_inicial: number;
-
-  @IsInt()
-  descuento_porcentaje: number;
-
-  @IsInt()
-  total_final: number;
-
-  @IsInt()
-  puntos_generados: number;
-
-  @IsInt()
-  id_cliente: number;
+  @IsString()
+  dni_cliente: string;
 
   @IsInt()
   id_usuario: number;
 
-  @IsOptional()
-  @IsInt()
-  id_ticket?: number;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ProductoVentaDto)
+  productos: ProductoVentaDto[];
+
+  @IsString()
+  numero_receta: string | null;
+
 }
