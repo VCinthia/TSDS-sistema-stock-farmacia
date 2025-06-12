@@ -1,12 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTicketRecetaDto } from './dto/create-ticket-receta.dto';
 import { UpdateTicketRecetaDto } from './dto/update-ticket-receta.dto';
+import { TicketReceta } from 'src/entities/ticket-receta.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { RecetaValidadaDto } from '../venta/dto/receta-valida.dto';
 
 @Injectable()
 export class TicketRecetaService {
-  create(createTicketRecetaDto: CreateTicketRecetaDto) {
-    return 'This action adds a new ticketReceta';
-  }
+  constructor(
+    @InjectRepository(TicketReceta)
+    private readonly ticketRepo: Repository<TicketReceta>,
+
+  ){}
+
+
+
 
   findAll() {
     return `This action returns all ticketReceta`;
@@ -16,11 +25,5 @@ export class TicketRecetaService {
     return `This action returns a #${id} ticketReceta`;
   }
 
-  update(id: number, updateTicketRecetaDto: UpdateTicketRecetaDto) {
-    return `This action updates a #${id} ticketReceta`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} ticketReceta`;
-  }
 }

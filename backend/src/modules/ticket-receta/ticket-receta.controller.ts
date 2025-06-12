@@ -7,10 +7,7 @@ import { UpdateTicketRecetaDto } from './dto/update-ticket-receta.dto';
 export class TicketRecetaController {
   constructor(private readonly ticketRecetaService: TicketRecetaService) {}
 
-  @Post()
-  create(@Body() createTicketRecetaDto: CreateTicketRecetaDto) {
-    return this.ticketRecetaService.create(createTicketRecetaDto);
-  }
+
 
   @Get()
   findAll() {
@@ -22,13 +19,5 @@ export class TicketRecetaController {
     return this.ticketRecetaService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketRecetaDto: UpdateTicketRecetaDto) {
-    return this.ticketRecetaService.update(+id, updateTicketRecetaDto);
-  }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ticketRecetaService.remove(+id);
-  }
 }

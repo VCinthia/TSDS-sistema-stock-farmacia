@@ -3,6 +3,7 @@ import { Cliente } from "./cliente.entity";
 import { Usuario } from "./usuario.entity";
 import { TicketReceta } from "./ticket-receta.entity";
 import { DetalleVenta } from "./detalle-venta.entity";
+import { Sucursal } from "./sucursal.entity";
 
 @Entity()
 export class Venta {
@@ -26,6 +27,9 @@ export class Venta {
 
   @Column()
   puntos_generados: number;
+
+  @ManyToOne(() => Sucursal, sucursal => sucursal.ventas)
+  sucursal: Sucursal;    //Aqui se muestra el ID
 
   @ManyToOne(() => Cliente, cliente => cliente.ventas)
   cliente: Cliente;  //Aqui se muestra el ID

@@ -9,6 +9,9 @@ export class CreateVentaDto {
   @IsInt()
   id_usuario: number;
 
+  @IsInt()
+  id_sucursal: number;
+
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductoVentaDto)

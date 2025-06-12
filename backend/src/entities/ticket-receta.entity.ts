@@ -1,5 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ReporteAnmat } from "./reporte-anmat.entity";
+import { ProductoPrescritoDto } from "src/modules/venta/dto/receta-valida.dto";
 
 @Entity()
 export class TicketReceta {
@@ -14,6 +15,9 @@ export class TicketReceta {
 
   @Column()
   fecha_recepcion: Date;
+
+  @Column({ type: 'json' })
+  detalle_productos: ProductoPrescritoDto[];
 
   @Column()
   numero_receta: string;

@@ -46,8 +46,5 @@ export class LoteController {
     return await this.loteService.update(+id, updateLoteDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.loteService.remove(+id);
-  }
+
 }

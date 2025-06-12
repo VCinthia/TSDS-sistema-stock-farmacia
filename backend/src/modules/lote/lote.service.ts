@@ -160,7 +160,19 @@ async update(id: number, updateLoteDto: UpdateLoteDto): Promise<ApiResponseDTO<R
 
 
 
-  remove(id: number) {
-    return `This action removes a #${id} lote`;
-  }
+async obtenerStockPorCodigoProdYSucursal(codigoNacional: string, idSucursal: number): Promise<number> {
+  const result = await this.loteRepo
+    .createQueryBuilder("lote")
+    .leftJoin("lote.producto", "producto")
+    .leftJoin("lote.sucursal", "sucursal")
+    .where("producto.codigo_nacional = :codigo", { codigo: codigoNacional })
+    .andWhere("sucursal.id_sucursal = :idSucursal", { idSucursal })
+    .select("SUM(lote.cantidad)", "total")
+    .getRawOne();
+
+  return Number(result.total) || 0;
+}
+
+
+
 }

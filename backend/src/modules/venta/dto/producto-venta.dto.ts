@@ -7,5 +7,4 @@ export class ProductoVentaDto {
   @IsNumber()
   @Min(1)
   cantidad: number;
-  id_producto: number;
 }

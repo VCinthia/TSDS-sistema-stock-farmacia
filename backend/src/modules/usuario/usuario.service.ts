@@ -30,8 +30,8 @@ export class UsuarioService {
     return `This action returns all usuario`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: number) {
+   return await this.usuarioRepo.findOne({ where: { id_usuario: id} });
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {

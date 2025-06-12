@@ -3,9 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
 import { ANMAT_API } from './constants/api.config';
-
 import { ResponseConsultaRecetaAnmatDto } from './dto/response-consulta-receta.dto';
-import * as mockConsultaReceta from './mocks/mock-consulta-receta.json';
 import { getMethodName } from 'common/utils/method-name';
 import { plainToInstance } from 'class-transformer';
 
@@ -38,7 +36,7 @@ async consultarRecetaANMAT(codigo: string): Promise<ResponseConsultaRecetaAnmatD
   }
 
 
-  
+
   private parsearRespuestaANMATConsultaReceta(responseAnmat: Object): ResponseConsultaRecetaAnmatDto {
 
     const dataAnmat = responseAnmat['data'];

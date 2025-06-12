@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
 import { Lote } from "./lote.entity";
+import { Venta } from "./venta.entity";
 
 @Entity()
 export class Sucursal {
@@ -21,4 +22,7 @@ export class Sucursal {
 
   @OneToMany(() => Lote, lote => lote.sucursal)
   lotes: Lote[];
+
+  @OneToMany(() => Venta, venta => venta.sucursal)
+  ventas: Venta[];
 }

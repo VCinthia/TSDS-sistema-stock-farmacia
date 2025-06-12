@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsArray, IsBoolean, IsDate, IsNumber, IsString, ValidateNested } from "class-validator";
 
-class ProductoPrescritoDto {
+export class ProductoPrescritoDto {
   @IsString()
   codigo_nacional: string;
 
@@ -14,6 +14,12 @@ export class RecetaValidadaDto {
   valida: boolean;
 
   @IsString()
+  codigo: string;
+
+  @IsString()
+  dni_paciente: string;
+
+  @IsString()
   matricula_medico: string;
 
   @IsDate()
@@ -21,10 +27,6 @@ export class RecetaValidadaDto {
   
   @IsDate()
   fecha_expiracion: Date;
-
-  @IsDate()
-  fecha_recepcion: Date;
-  
 
   @IsArray()
   @ValidateNested({ each: true })
