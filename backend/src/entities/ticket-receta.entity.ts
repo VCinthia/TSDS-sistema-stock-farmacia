@@ -7,10 +7,22 @@ export class TicketReceta {
   id_ticket: number;
 
   @Column()
-  fecha_emision_receta: Date;
+  fecha_emision: Date;
 
   @Column()
-  codigo_autorizacion: string;
+  fecha_expiracion: Date;
+
+  @Column()
+  fecha_recepcion: Date;
+
+  @Column()
+  numero_receta: string;
+
+  @Column()
+  maricula_medico: string; 
+
+  @Column()
+  dni_paciente: string; 
 
   @ManyToMany(() => ReporteAnmat, reporte => reporte.tickets)
   @JoinTable({ name: 'reporte_ticket' }) // Nombre de la tabla intermedia

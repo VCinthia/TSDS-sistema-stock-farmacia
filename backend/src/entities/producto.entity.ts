@@ -1,6 +1,6 @@
 import { CategoriaProducto } from "src/enums/categoria-producto.enum";
 import { TipoProducto } from "src/enums/tipo-producto.enum";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 import { Lote } from "./lote.entity";
 import { DetalleVenta } from "./detalle-venta.entity";
 
@@ -8,6 +8,9 @@ import { DetalleVenta } from "./detalle-venta.entity";
 export class Producto {
   @PrimaryGeneratedColumn()
   id_producto: number;
+
+  @Column({ unique: true })
+  codigo_nacional: string;
 
   @Column()
   nombre: string;

@@ -13,6 +13,7 @@ import { DetalleVentaModule } from './modules/detalle-venta/detalle-venta.module
 import { TicketRecetaModule } from './modules/ticket-receta/ticket-receta.module';
 import { ReporteAnmatModule } from './modules/reporte-anmat/reporte-anmat.module';
 import { SeedModule } from './modules/seed/seed.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { SeedModule } from './modules/seed/seed.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'], // Patrón actualizado
       synchronize: true,  // Solo para desarrollo, Deshabilitar en producción
     }),
+    HttpModule, //módulo HTTP
     SucursalModule,
     UsuarioModule,
     ProveedorModule,
