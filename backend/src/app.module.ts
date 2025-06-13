@@ -14,6 +14,7 @@ import { TicketRecetaModule } from './modules/ticket-receta/ticket-receta.module
 import { ReporteAnmatModule } from './modules/reporte-anmat/reporte-anmat.module';
 import { SeedModule } from './modules/seed/seed.module';
 import { HttpModule } from '@nestjs/axios';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -48,4 +49,6 @@ import { HttpModule } from '@nestjs/axios';
   ],
 
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(private dataSource: DataSource) {}
+}

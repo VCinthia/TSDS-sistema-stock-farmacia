@@ -17,18 +17,10 @@ export class RangoDescuentoController {
     return this.rangoDescuentoService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.rangoDescuentoService.findOne(+id);
-  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRangoDescuentoDto: UpdateRangoDescuentoDto) {
     return this.rangoDescuentoService.update(+id, updateRangoDescuentoDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.rangoDescuentoService.remove(+id);
-  }
 }

@@ -37,10 +37,10 @@ export class Venta {
   @ManyToOne(() => Usuario, usuario => usuario.ventas)
   usuario: Usuario;  //Aqui se muestra el ID
 
-  @OneToOne(() => TicketReceta, { nullable: true })  // Permite valores null
+  @OneToOne(() => TicketReceta, { nullable: true, cascade: true })  // Permite valores null
   @JoinColumn()
   ticketReceta?: TicketReceta; //Aqui se muestra el ID
 
-  @OneToMany(() => DetalleVenta, detalle => detalle.venta)
+  @OneToMany(() => DetalleVenta, detalle => detalle.venta, { cascade: true })
   detalles: DetalleVenta[];
 }

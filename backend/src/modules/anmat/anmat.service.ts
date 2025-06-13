@@ -51,7 +51,7 @@ async consultarRecetaANMAT(codigo: string): Promise<ResponseConsultaRecetaAnmatD
 
 
     private handleError(error: AxiosError, codigo: string): never {
-    Logger.error(`Error validando receta ${codigo}: ${error.message}`);
+    Logger.error(`Error validando receta ${codigo}: ${error.message}`, error);
     
     if (error.response) {
       Logger.error(`Respuesta de error: ${JSON.stringify(error.response.data)}`);

@@ -19,6 +19,8 @@ import { Proveedor } from 'src/entities/proveedor.entity';
 import { ProveedorService } from '../proveedor/proveedor.service';
 import { Sucursal } from 'src/entities/sucursal.entity';
 import { SucursalService } from '../sucursal/sucursal.service';
+import { RangoDescuento } from 'src/entities/rango-descuento.entity';
+import { RangoDescuentoService } from '../rango-descuento/rango-descuento.service';
 
 
 @Module({
@@ -34,6 +36,7 @@ import { SucursalService } from '../sucursal/sucursal.service';
       TicketReceta,
       Lote,
       AnmatService,
+      RangoDescuento,
     ])
   ],  
   controllers: [VentaController],
@@ -47,6 +50,7 @@ import { SucursalService } from '../sucursal/sucursal.service';
     TicketRecetaService,
     LoteService,
     AnmatService,
+    RangoDescuentoService,
   ]
 })
 export class VentaModule {}
