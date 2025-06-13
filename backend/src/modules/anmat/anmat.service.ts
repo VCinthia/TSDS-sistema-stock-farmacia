@@ -37,6 +37,42 @@ async consultarRecetaANMAT(codigo: string): Promise<ResponseConsultaRecetaAnmatD
 
 
 
+  async actualizarEstadoRecetaUtilizada(codigoReceta: string) {
+    const url = `${this.baseUrl}${ANMAT_API.ENDPOINTS.RECETA_CONSULTA}`+"/"+codigoReceta;
+    const actualizacion = {
+      valida: false,
+      utilizada: true
+    };
+    try {
+    // 1. Obtener la receta actual
+    const recetaActual = await firstValueFrom(
+      this.httpService.get(url)
+    ).then(response => response.data);
+
+    // 2. Actualizar solo los campos necesarios dentro de 'data'
+    const recetaActualizada = recetaActual.data.valida 
+
+      const response = await firstValueFrom(
+        this.httpService.put(url, actualizacion, {
+          headers: { 'Content-Type': 'application/json' }
+        })
+      );
+
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error actualizando receta: ${error.response?.data?.message || error.message}`);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
   private parsearRespuestaANMATConsultaReceta(responseAnmat: Object): ResponseConsultaRecetaAnmatDto {
 
     const dataAnmat = responseAnmat['data'];

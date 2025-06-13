@@ -65,7 +65,8 @@ async create(requesBody: CreateVentaDto) {
     if (!sucursalDB) { throw new NotFoundException(`Sucursal con ID ${requesBody.id_sucursal} no encontrada`);}
 
     // 2. Validación de productos y receta
-    const productosDB = await this.validarProductos(requesBody);
+    const {productosDB, requiereReceta} = await this.validarProductos(requesBody);
+
 
 
     // 3. Crear venta y ticket de receta (si aplica)
@@ -107,8 +108,14 @@ async create(requesBody: CreateVentaDto) {
     clienteDB.puntos_fidelizacion += venta.puntos_generados;
     await queryRunner.manager.save(Cliente, clienteDB);
 
+
+    // 8. Send Novedad Receta utilizada ANMAT
+    if (requiereReceta && requesBody.numero_receta) {
+     //const respPut = await this.anmatService.actualizarEstadoRecetaUtilizada(requesBody.numero_receta);
+    }
+
+
     await queryRunner.commitTransaction();
-    
     return ventaGuardada;
   } catch (error) {
     await queryRunner.rollbackTransaction();
@@ -149,7 +156,7 @@ async create(requesBody: CreateVentaDto) {
 
 
 
-private async validarProductos( requesBody: CreateVentaDto):  Promise< Producto[]> {
+private async validarProductos( requesBody: CreateVentaDto):  Promise<{productosDB:Producto[], requiereReceta: boolean}> {
   // Obtener códigos nacionales únicos
   const codigosNacionales = requesBody.productos.map(p => p.codigo_nacional);
   
@@ -188,7 +195,7 @@ private async validarProductos( requesBody: CreateVentaDto):  Promise< Producto[
       );
     }
   }
-  return  productosDB
+  return  {productosDB: productosDB, requiereReceta: requiereReceta};
 }
 
 
