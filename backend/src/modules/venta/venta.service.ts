@@ -69,15 +69,13 @@ async create(requesBody: CreateVentaDto) {
 
 
 
-    // 3. Crear venta y ticket de receta (si aplica)
+    // 3. Crear venta y ticket de receta (si aplica, validacin de receta) 
     const venta = new Venta();
     venta.fecha = new Date();
     venta.cliente = clienteDB;
     venta.usuario = usuarioDB;
     venta.sucursal = sucursalDB;
     venta.puntos_cliente_inicial = clienteDB.puntos_fidelizacion;
-    
-
 
     if (requesBody.numero_receta) {
       venta.ticketReceta = await this.crearTicketReceta(requesBody, productosDB );
@@ -235,33 +233,51 @@ private async crearTicketReceta(requestBody: CreateVentaDto, productosDB: Produc
 private async procesarDetalles( queryRunner: QueryRunner,  
                                 productosVenta: ProductoVentaDto[],  
                                 productosDB: Producto[],  
-                                sucursalId: number) {
+                                sucursalId: number
+                              ) {
   const detalles: DetalleVenta[] = [];
   let subtotal = 0;
 
   for (const [index, prodDto] of productosVenta.entries()) {
     const producto = productosDB[index];
-    const lote = await this.seleccionarLoteValido(
+
+    //Obtener todos los lotes válidos ordenados por fecha de vencimiento
+    const lotes = await this.seleccionarLotesValidos(
         queryRunner, 
         producto.id_producto, 
         sucursalId, 
         prodDto.cantidad
     );
 
-    // Actualizar stock LOTE
-    lote.cantidad -= prodDto.cantidad;
-    await queryRunner.manager.save(Lote, lote);
-
     // Crear detalle
     const detalle = new DetalleVenta();
     detalle.cantidad = prodDto.cantidad;
     detalle.precio_unitario = producto.precio_unitario;
     detalle.producto = producto;
-    //detalle.venta = ??
-
-  
     detalles.push(detalle);
-    //Calculo PrecioTotal
+
+
+    // Actualizar stock LOTES (FIFO)
+    let cantidadRestante = prodDto.cantidad;
+    const lotesUtilizados : string[] = [];
+
+    for (const lote of lotes) {
+      if (cantidadRestante <= 0) break;
+      const cantidadAUsar = Math.min(cantidadRestante, lote.cantidad);
+      
+      // Actualizar lote
+      lote.cantidad -= cantidadAUsar;
+      await queryRunner.manager.save(Lote, lote);
+
+      //Lotes Usados
+      const detalleLote = `Lote: ${lote.id_lote} Cantidad: ${cantidadAUsar}`;
+      lotesUtilizados.push(detalleLote)
+      
+      cantidadRestante -= cantidadAUsar;
+    }
+    Logger.log(`STOCK UTILIZADO -  ${lotesUtilizados} `, getMethodName());
+  
+    //Calculo PrecioTotal-sin descuento
     subtotal += producto.precio_unitario * prodDto.cantidad;
   }
 
@@ -269,10 +285,10 @@ private async procesarDetalles( queryRunner: QueryRunner,
 }
 
 
-private async seleccionarLoteValido( queryRunner: QueryRunner,
+private async seleccionarLotesValidos( queryRunner: QueryRunner,
                               productoId: number,  
                               sucursalId: number,  
-                              cantidad: number): Promise<Lote> {
+                            cantidad: number): Promise<Lote[]> {
   
   const lotes = await queryRunner.manager.find(Lote, {
     where: {
@@ -284,15 +300,15 @@ private async seleccionarLoteValido( queryRunner: QueryRunner,
     order: { fecha_vencimiento: 'ASC' }
   });
 
-  for (const lote of lotes) {
-    if (lote.cantidad >= cantidad) {
-      return lote;
+   //Verificar stock total disponible
+  const stockTotal = lotes.reduce((sum, lote) => sum + lote.cantidad, 0);
+    if (stockTotal < cantidad) {
+      throw new NotFoundException(
+        `Stock insuficiente para ProductoId: ${productoId}. ` +
+        `Necesario: ${cantidad}, Disponible: ${stockTotal}`
+      );
     }
-    // Lógica para combinar lotes si es necesario
-    cantidad -= lote.cantidad;
-  }
-
-  throw new NotFoundException(`Stock insuficiente para el producto ${productoId}`);
+  return lotes;
 }
 
 
