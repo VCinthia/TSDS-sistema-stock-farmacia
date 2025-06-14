@@ -10,7 +10,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
 
   catch(exception: unknown, host: ArgumentsHost) {
-    this.logger.error('Inicia filtro de error');
+    this.logger.error('Inicia Catch Error: '+ exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
 

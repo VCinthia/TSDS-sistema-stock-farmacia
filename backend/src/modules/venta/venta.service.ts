@@ -84,7 +84,7 @@ async create(requesBody: CreateVentaDto) {
     }
 
 
-    // 4. Procesar detalles y actualizar stock
+    // 4. Procesar detalles y actualizar stock (lotes)
     const { detalles, subtotal } = await this.procesarDetalles(
       queryRunner,
       requesBody.productos,
@@ -111,7 +111,7 @@ async create(requesBody: CreateVentaDto) {
 
     // 8. Send Novedad Receta utilizada ANMAT
     if (requiereReceta && requesBody.numero_receta) {
-     //const respPut = await this.anmatService.actualizarEstadoRecetaUtilizada(requesBody.numero_receta);
+     const respPut = await this.anmatService.actualizarEstadoRecetaUtilizada(requesBody.numero_receta);
     }
 
 
@@ -300,7 +300,8 @@ private async seleccionarLoteValido( queryRunner: QueryRunner,
 async validarReceta( request : CreateVentaDto, prodsRequerenReceta: Producto[]) : Promise<RecetaValidadaDto> {
   const response = await this.anmatService.consultarRecetaANMAT(request.numero_receta!);
 
-  if(!response.success){
+  try{
+      if(!response.success){
       throw new Error('Error al consular la receta en ANMAT');
   }
 
@@ -344,6 +345,12 @@ async validarReceta( request : CreateVentaDto, prodsRequerenReceta: Producto[]) 
     fecha_emision: response.data.emision,
     fecha_expiracion: response.data.expiracion,
   });
+
+  }catch(error){
+    const mensaje= ` ${error.response?.data?.message || error.message}`
+    Logger.error(mensaje, error.stack, getMethodName());
+    throw new Error(mensaje);
+  }
 
   }
 
