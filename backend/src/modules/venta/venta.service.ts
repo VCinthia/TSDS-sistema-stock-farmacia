@@ -120,6 +120,7 @@ async create(requesBody: CreateVentaDto) : Promise<ApiResponseDTO<Venta | null>>
     await queryRunner.commitTransaction();
     return ApiResponseDTO.success(API_MESSAGES.VENTAS.CREATED , ventaGuardada);
   } catch (error) {
+    Logger.error("Error al crear Venta", error.stack, getMethodName());
     await queryRunner.rollbackTransaction();
     throw new InternalServerErrorException(error.message);
   } finally {
