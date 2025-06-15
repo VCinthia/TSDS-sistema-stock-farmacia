@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, ParseIntPipe, Query } from '@nestjs/common';
 import { ProductoService } from './producto.service';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ResponseProductoDto } from './dto/response-producto.dto';
+import { ApiResponseDTO } from 'common/dto/api-response.dto';
+import { API_MESSAGES } from 'common/constants/messages';
 
 @Controller('producto')
 export class ProductoController {
@@ -19,6 +22,16 @@ export class ProductoController {
   findAll() {
     return this.productoService.findAll();
   }
+
+
+  @Get("/stock-critico/:idSucursal'")
+  @ApiOperation({ summary: 'Retorna productos con stock crítico o agotado de una sucursal' })
+  @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.PRODUCTOS.ALL, type: ApiResponseDTO<ResponseProductoDto[]>, })
+  async findAllBySucursal(@Param('idSucursal', new ParseIntPipe()) idSucursal: number): Promise<ApiResponseDTO<ResponseProductoDto[] | null>> {
+    const productos = await this.productoService.getProductosStockCritico(idSucursal);
+    return productos;
+  }
+
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna un producto por ID' })
