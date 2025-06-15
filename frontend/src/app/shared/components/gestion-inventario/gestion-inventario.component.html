@@ -5,66 +5,55 @@
 </div>
 <div class="contenedorBuscador">
     <mat-form-field appearance="outline" class="inputBuscadorProducto">
-    <mat-label>Id o nombre del producto</mat-label>
+    <mat-label>Nombre del producto</mat-label>
     <mat-icon matPrefix>search</mat-icon>
             <input matInput 
-                  [(ngModel)]="productoId" 
+                  [(ngModel)]="filtroNombre"
                   >
     </mat-form-field>
-    <app-boton-primario class="boton-buscar" [buttonText]="'Buscar'" (click)="buscarProducto()"></app-boton-primario>
+    <!-- <app-boton-primario class="boton-buscar" [buttonText]="'Buscar'"></app-boton-primario> -->
     <div class="contenedorBotonesSucursal">
-        <app-boton-secundario [buttonText]="'Sucursal actual'"></app-boton-secundario>
-        <app-boton-secundario [buttonText]="'Todas las sucursales'"></app-boton-secundario>
+        <app-boton-secundario [buttonText]="'Sucursal actual'" (click)="cargarLotesPorSucursal(idSucursalEmpleado)"></app-boton-secundario>
+        <app-boton-secundario [buttonText]="'Todas las sucursales'" (click)="cargarLotes()"></app-boton-secundario>
     </div>
 </div>
 <!-- archivo: medicamentos.component.html -->
 
-<mat-card>
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z1">
+<mat-card *ngIf="!cargando">
+  <mat-table [dataSource]="lotesFiltrados" class="mat-elevation-z1">
 
     <!-- Código -->
-    <ng-container matColumnDef="codigo">
-      <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.codigo}} </mat-cell>
+    <ng-container matColumnDef="id_producto">
+      <mat-header-cell *matHeaderCellDef> Id Producto </mat-header-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.producto.id_producto}} </mat-cell>
     </ng-container>
 
     <!-- Nombre -->
     <ng-container matColumnDef="nombre">
       <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.nombre}} </mat-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.producto.nombre}} </mat-cell>
     </ng-container>
-
-    <!-- Categoría -->
-    <ng-container matColumnDef="categoria">
-      <mat-header-cell *matHeaderCellDef> Categoría </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.categoria}} </mat-cell>
-    </ng-container>
-
     <!-- Stock -->
     <ng-container matColumnDef="stock">
       <mat-header-cell *matHeaderCellDef> Stock </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.stock}} </mat-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.cantidad}} </mat-cell>
     </ng-container>
 
     <!-- Sucursal -->
     <ng-container matColumnDef="sucursal">
       <mat-header-cell *matHeaderCellDef> Sucursal </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.sucursal}} </mat-cell>
-    </ng-container>
-
-    <!-- Precio -->
-    <ng-container matColumnDef="precio">
-      <mat-header-cell *matHeaderCellDef> Precio </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.precio}} </mat-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.sucursal.direccion}} </mat-cell>
     </ng-container>
 
     <!-- Acción -->
-    <!-- <ng-container matColumnDef="accion">
+    <ng-container matColumnDef="accion">
       <mat-header-cell *matHeaderCellDef> Acción </mat-header-cell>
       <mat-cell *matCellDef="let elemento">
-        <button mat-button *ngIf="elemento.stock < 5">Solicitar</button>
+        <button mat-button color="primary" *ngIf="elemento.sucursal.id_sucursal !== idSucursalEmpleado" (click)="solicitarProducto()">
+      Solicitar
+    </button>
       </mat-cell>
-    </ng-container> -->
+    </ng-container>
 
     <!-- Encabezado y contenido -->
     <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
@@ -72,3 +61,7 @@
 
   </mat-table>
 </mat-card>
+<div class="spinner" *ngIf="cargando">
+  <mat-spinner diameter="60" color="accent"></mat-spinner>
+  <p>Cargando datos...</p>
+</div>

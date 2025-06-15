@@ -20,6 +20,16 @@ app-boton-primario, app-boton-secundario{
     padding-bottom: 20px;
 }
 
+.spinner{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px; /* o el alto aproximado de tu tabla */
+  background-color: transparent;
+}
+
+
 .contenedorBuscador{
     display: flex;
     width: 100%;
