@@ -30,12 +30,4 @@ export class ProveedorService {
       return proveedor;
   }
 
-  
-  update(id: number, updateProveedorDto: UpdateProveedorDto) {
-    return `This action updates a #${id} proveedor`;
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.proveedorRepo.delete(id);
-  }
 }

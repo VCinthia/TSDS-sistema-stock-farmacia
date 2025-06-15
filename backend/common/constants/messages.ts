@@ -10,6 +10,11 @@ export const API_MESSAGES = {
     ALL: 'Listado de ventas obtenido exitosamente',
     NOT_FOUND: 'Venta no encontrada'
   },
+  PRODUCTOS: {
+    CREATED: 'Producto creado exitosamente',
+    ALL: 'Listado de productos obtenido exitosamente',
+    NOT_FOUND: 'Producto no encontrado'
+  },
   ERRORES: {
     INTERNO: 'Lote creado exitosamente',
     NOT_FOUND: 'Lote no encontrado',

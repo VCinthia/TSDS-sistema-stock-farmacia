@@ -21,6 +21,7 @@ import { Sucursal } from 'src/entities/sucursal.entity';
 import { SucursalService } from '../sucursal/sucursal.service';
 import { RangoDescuento } from 'src/entities/rango-descuento.entity';
 import { RangoDescuentoService } from '../rango-descuento/rango-descuento.service';
+import { DetalleVenta } from 'src/entities/detalle-venta.entity';
 
 
 @Module({
@@ -37,6 +38,7 @@ import { RangoDescuentoService } from '../rango-descuento/rango-descuento.servic
       Lote,
       AnmatService,
       RangoDescuento,
+      DetalleVenta,
     ])
   ],  
   controllers: [VentaController],

@@ -6,6 +6,9 @@ export class ProductoDto {
   id_producto: number;
 
   @Expose()
+  codigo_nacional: string;
+
+  @Expose()
   nombre: string;
   
   @Expose()

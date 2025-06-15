@@ -40,6 +40,18 @@ export class LoteController {
     return lotes;
   }
 
+  @Get("/sucursal/proximosAVencer")
+  @ApiOperation({ summary: 'Retorna todos los Lotes proximos a vencer de una sucursal' })
+  @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.LOTES.ALL, type: ApiResponseDTO<ResponseLoteDto[]>, })
+  async findProximosAVencerBySucursal(
+                @Query('diasDeAntelacion', new ParseIntPipe()) diasDeAntelacion: number, 
+                @Query('idSucursal', new ParseIntPipe()) idSucursal: number
+              )  : Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
+    const lotes = await this.loteService.findProximosAVencerBySucursal(diasDeAntelacion, idSucursal);
+    return lotes;
+  }
+
+
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna un Lote por ID' })

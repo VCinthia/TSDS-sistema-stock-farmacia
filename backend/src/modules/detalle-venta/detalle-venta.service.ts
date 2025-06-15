@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDetalleVentaDto } from './dto/create-detalle-venta.dto';
-import { UpdateDetalleVentaDto } from './dto/update-detalle-venta.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DetalleVenta } from 'src/entities/detalle-venta.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DetalleVentaService {
-  create(createDetalleVentaDto: CreateDetalleVentaDto) {
-    return 'This action adds a new detalleVenta';
-  }
+      constructor(
+      @InjectRepository(DetalleVenta)
+      private readonly detalleVentaRepo: Repository<DetalleVenta>,
+
+    ) {}
+
+
+
 
   findAll() {
     return `This action returns all detalleVenta`;
@@ -16,11 +22,4 @@ export class DetalleVentaService {
     return `This action returns a #${id} detalleVenta`;
   }
 
-  update(id: number, updateDetalleVentaDto: UpdateDetalleVentaDto) {
-    return `This action updates a #${id} detalleVenta`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} detalleVenta`;
-  }
 }

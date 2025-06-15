@@ -3,7 +3,7 @@ import { CreateLoteDto } from './dto/create-lote.dto';
 import { UpdateLoteDto } from './dto/update-lote.dto';
 import { Lote } from 'src/entities/lote.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, LessThanOrEqual, MoreThan, Repository } from 'typeorm';
 import { ApiResponseDTO } from 'common/dto/api-response.dto';
 import { ErrorCodes } from 'common/constants/error-codes';
 import { getMethodName } from 'common/utils/method-name';
@@ -13,7 +13,7 @@ import { SucursalService } from '../sucursal/sucursal.service';
 import { API_MESSAGES } from 'common/constants/messages';
 import { plainToInstance } from 'class-transformer';
 import { ResponseLoteDto } from './dto/response-lote.dto';
-import { ResponseLoteDetalleDto } from './dto/response-lote-detalle.dto';
+
 
 
 @Injectable()
@@ -88,6 +88,7 @@ export class LoteService {
 
 
 async findAll(): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
+  Logger.log(`Inicio`, getMethodName());
   try {
   const lotes = await this.loteRepo.find({
     relations: {
@@ -113,6 +114,7 @@ async findAll(): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
 
 
 async findAllBySucursal(idSucursal : number): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
+ Logger.log(`Inicio idSucursal: ${idSucursal}`, getMethodName());
   try {
   const lotes = await this.loteRepo.find({
     relations: {
@@ -144,6 +146,7 @@ async findAllBySucursal(idSucursal : number): Promise<ApiResponseDTO<ResponseLot
 
 
 async findOne(id: number): Promise<ApiResponseDTO<ResponseLoteDto | null>> {
+Logger.log(`Inicio id: ${id}`, getMethodName());
   try {
     const lote = await this.loteRepo.findOne({
     relations: {
@@ -200,6 +203,7 @@ async update(id: number, updateLoteDto: UpdateLoteDto): Promise<ApiResponseDTO<R
 
 
 async obtenerStockPorCodigoProdYSucursal(codigoNacional: string, idSucursal: number): Promise<number> {
+  Logger.log(`Inicio - codigoNacional ${codigoNacional}, idSucursal: ${idSucursal}` , getMethodName());
   const result = await this.loteRepo
     .createQueryBuilder("lote")
     .leftJoin("lote.producto", "producto")
@@ -211,6 +215,53 @@ async obtenerStockPorCodigoProdYSucursal(codigoNacional: string, idSucursal: num
 
   return Number(result.total) || 0;
 }
+
+
+
+async findProximosAVencerBySucursal(diasAntelacion: number = 10, idSucursal: number ): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
+  Logger.log(`Inicio - diasAntelacion: ${diasAntelacion} , idSucursal: ${idSucursal}`, getMethodName());
+  try {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); 
+    const fechaLimite = new Date();
+    fechaLimite.setDate(hoy.getDate() + diasAntelacion);
+    fechaLimite.setHours(23, 59, 59, 999); // Fin del día
+
+    // Obtener lotes ordenados
+    const lotes = await this.loteRepo.find({
+    relations: {
+      producto: true,
+    },
+    where: {
+      sucursal: {
+        id_sucursal: idSucursal
+      },
+      cantidad: MoreThan(0),
+      fecha_vencimiento: Between(hoy, fechaLimite)
+    },
+    order: {
+      fecha_vencimiento: 'ASC' // Más próximos primero
+    },
+    take: 100 // Límite de resultados
+  });
+
+    const lotesDto = plainToInstance(ResponseLoteDto, lotes, {
+      excludeExtraneousValues: true,
+    });
+
+    if(lotesDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, lotesDto);
+    }
+    return ApiResponseDTO.success(API_MESSAGES.LOTES.ALL, lotesDto);
+  } catch (error) {
+    Logger.error(`Error al obtener lotes próximos a vencer: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
+  }
+}
+
+
+
+
 
 
 
