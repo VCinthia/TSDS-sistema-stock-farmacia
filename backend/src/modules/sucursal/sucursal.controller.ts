@@ -9,6 +9,7 @@ export class SucursalController {
   constructor(private readonly sucursalService: SucursalService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crea una sucursal' })
   create(@Body() createSucursalDto: CreateSucursalDto) {
     return this.sucursalService.create(createSucursalDto);
   }
@@ -20,11 +21,13 @@ export class SucursalController {
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Actualiza una sucursal por Id' })
   update(@Param('id', ParseIntPipe) id: number, @Body() updateSucursalDto: UpdateSucursalDto) {
     return this.sucursalService.update(+id, updateSucursalDto);
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Elimina una sucursal por Id' })
   remove(@Param('id') id: string) {
     return this.sucursalService.remove(+id);
   }

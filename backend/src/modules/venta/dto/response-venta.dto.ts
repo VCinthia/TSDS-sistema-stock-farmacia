@@ -1,15 +1,25 @@
 import { Expose, Type } from "class-transformer";
-
-export class ProductoDto {
-  @Expose()
-  id_producto: number;
-
+import { TipoProducto } from "src/enums/tipo-producto.enum";
+export class ProductoDto{
   @Expose()
   nombre: string;
+
+  @Expose()
+  tipo: TipoProducto;
+}
+
+export class DetalleVentaDTO {
+  @Expose()
+  cantidad: number;
+
+  @Expose()
+  precio_unitario: number;
   
   @Expose()
-  precio_unitario: string;
+  @Type(() => ProductoDto)
+  producto: ProductoDto;
 }
+
 
 export class SucursalDto {
   @Expose()
@@ -19,26 +29,74 @@ export class SucursalDto {
   direccion: string;
 }
 
+export class ClienteDto {
+  @Expose()
+  dni: number;
+
+  @Expose()
+  nombre: string;
+}
+
+export class UsuarioDto {
+  @Expose()
+  nombre: string;
+
+  @Expose()
+  rol: string;
+}
+
+export class TicketRecetaDto {
+  @Expose()
+  numero_receta: string;
+}
+
+
 
 
 
 export class ResponseVentaDto {
   @Expose()
-  id_lote: number;
+  id_venta: number;
 
   @Expose()
-  fecha_vencimiento: Date;
+  fecha: Date;
 
   @Expose()
-  cantidad: number;
+  subtotal: number;
 
   @Expose()
-  @Type(() => ProductoDto)
-  producto: ProductoDto;
+  puntos_cliente_inicial: number;
 
+  @Expose()
+  descuento_porcentaje: number;
+  
+  @Expose()
+  total_final: number;
+
+  @Expose()
+  puntos_generados: number;
 
   @Expose()
   @Type(() => SucursalDto)
   sucursal: SucursalDto;    
+
+  @Expose()
+  @Type(() => ClienteDto)
+  cliente: ClienteDto;    
+
+  @Expose()
+  @Type(() => UsuarioDto)
+  usuario: UsuarioDto;    
+
+  @Expose()
+  @Type(() => TicketRecetaDto)
+  ticketReceta: TicketRecetaDto;    
+
+  @Expose()
+  @Type(() => DetalleVentaDTO)
+  detalles: DetalleVentaDTO[];
+
+
+
 
 }

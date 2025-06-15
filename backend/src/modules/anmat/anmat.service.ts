@@ -39,6 +39,7 @@ async consultarRecetaANMAT(codigo: string): Promise<ResponseConsultaRecetaAnmatD
 
   async actualizarEstadoRecetaUtilizada(codigoReceta: string) {
     const url = `${this.baseUrl}${ANMAT_API.ENDPOINTS.RECETA_CONSULTA}`+"/"+codigoReceta;
+    Logger.log(` PATCH a ${url}`, getMethodName());
     
     try {
     // 1. Obtener la receta actual

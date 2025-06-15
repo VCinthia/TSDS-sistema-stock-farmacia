@@ -89,9 +89,43 @@ export class LoteService {
 
 async findAll(): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
   try {
-    const lotes = await this.loteRepo.find({
-      relations: ['producto', 'proveedor', 'sucursal'], // para incluir relaciones necesarias
+  const lotes = await this.loteRepo.find({
+    relations: {
+      producto: true,
+      proveedor: true,
+      sucursal: true
+    }
     });
+
+    const lotesDto = plainToInstance(ResponseLoteDto, lotes, {
+      excludeExtraneousValues: true,
+    });
+
+    if(lotesDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, lotesDto);
+    }
+    return ApiResponseDTO.success(API_MESSAGES.LOTES.ALL, lotesDto);
+  } catch (error) {
+    Logger.error(`Error al obtener lotes: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
+  }
+}
+
+
+async findAllBySucursal(idSucursal : number): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
+  try {
+  const lotes = await this.loteRepo.find({
+    relations: {
+      producto: true,
+      proveedor: true,
+      sucursal: true
+    },
+    where: {
+      sucursal: {
+        id_sucursal: idSucursal
+      }
+    }
+  });
 
     const lotesDto = plainToInstance(ResponseLoteDto, lotes, {
       excludeExtraneousValues: true,
@@ -112,9 +146,14 @@ async findAll(): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
 async findOne(id: number): Promise<ApiResponseDTO<ResponseLoteDto | null>> {
   try {
     const lote = await this.loteRepo.findOne({
-      where: { id_lote: id },
-      relations: ['producto', 'proveedor', 'sucursal'],
-    });
+    relations: {
+      producto: true,
+      proveedor: true,
+      sucursal: true,
+    },
+    where: { id_lote: id}
+    });  
+
 
     if (!lote) {
       return ApiResponseDTO.error(API_MESSAGES.LOTES.NOT_FOUND, ErrorCodes.NOT_FOUND);

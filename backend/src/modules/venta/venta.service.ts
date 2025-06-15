@@ -24,6 +24,10 @@ import { SucursalService } from '../sucursal/sucursal.service';
 import { Cliente } from 'src/entities/cliente.entity';
 import { RangoDescuento } from 'src/entities/rango-descuento.entity';
 import { RangoDescuentoService } from '../rango-descuento/rango-descuento.service';
+import { ApiResponseDTO } from 'common/dto/api-response.dto';
+import { API_MESSAGES } from 'common/constants/messages';
+import { ResponseVentaDto } from './dto/response-venta.dto';
+import { ErrorCodes } from 'common/constants/error-codes';
 
 
 @Injectable()
@@ -47,7 +51,8 @@ export class VentaService {
 
 
 
-async create(requesBody: CreateVentaDto) {
+async create(requesBody: CreateVentaDto) : Promise<ApiResponseDTO<Venta | null>> {
+  Logger.log('Inicio',getMethodName());
   const queryRunner = this.dataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();
@@ -112,9 +117,8 @@ async create(requesBody: CreateVentaDto) {
      const respPut = await this.anmatService.actualizarEstadoRecetaUtilizada(requesBody.numero_receta);
     }
 
-
     await queryRunner.commitTransaction();
-    return ventaGuardada;
+    return ApiResponseDTO.success(API_MESSAGES.VENTAS.CREATED , ventaGuardada);
   } catch (error) {
     await queryRunner.rollbackTransaction();
     throw new InternalServerErrorException(error.message);
@@ -237,28 +241,38 @@ private async procesarDetalles( queryRunner: QueryRunner,
                               ) {
   const detalles: DetalleVenta[] = [];
   let subtotal = 0;
+  // Crear mapa de productos para búsqueda más eficiente
+  const productosMapFromDB = new Map<string, Producto>();
+  productosDB.forEach(p => productosMapFromDB.set(p.codigo_nacional, p));
 
-  for (const [index, prodDto] of productosVenta.entries()) {
-    const producto = productosDB[index];
+  for (const prodRequest of productosVenta) {
+    // 1. Buscar producto por código nacional
+    const productoDB = productosMapFromDB.get(prodRequest.codigo_nacional);
+
+    if (!productoDB) {
+      throw new NotFoundException(
+        `Producto con código ${prodRequest.codigo_nacional} no encontrado`
+      );
+    }
 
     //Obtener todos los lotes válidos ordenados por fecha de vencimiento
     const lotes = await this.seleccionarLotesValidos(
         queryRunner, 
-        producto.id_producto, 
+        productoDB.id_producto, 
         sucursalId, 
-        prodDto.cantidad
+        prodRequest.cantidad
     );
 
     // Crear detalle
     const detalle = new DetalleVenta();
-    detalle.cantidad = prodDto.cantidad;
-    detalle.precio_unitario = producto.precio_unitario;
-    detalle.producto = producto;
+    detalle.cantidad = prodRequest.cantidad;
+    detalle.precio_unitario = productoDB.precio_unitario;
+    detalle.producto = productoDB;
     detalles.push(detalle);
 
 
     // Actualizar stock LOTES (FIFO)
-    let cantidadRestante = prodDto.cantidad;
+    let cantidadRestante = prodRequest.cantidad;
     const lotesUtilizados : string[] = [];
 
     for (const lote of lotes) {
@@ -278,7 +292,7 @@ private async procesarDetalles( queryRunner: QueryRunner,
     Logger.log(`STOCK UTILIZADO -  ${lotesUtilizados} `, getMethodName());
   
     //Calculo PrecioTotal-sin descuento
-    subtotal += producto.precio_unitario * prodDto.cantidad;
+    subtotal += productoDB.precio_unitario * prodRequest.cantidad;
   }
 
   return { detalles, subtotal };
@@ -372,25 +386,103 @@ async validarReceta( request : CreateVentaDto, prodsRequerenReceta: Producto[]) 
 
 
 
-  findAll() {
-    return `This action returns all venta`;
+async findAll(): Promise<ApiResponseDTO<ResponseVentaDto[] | null>> {
+  try {
+    const lotes = await this.ventaRepo.find({
+    relations: {
+      cliente: true,
+      sucursal: true,
+      ticketReceta: true,
+      usuario: true,
+      detalles: {
+        producto: true,
+      }
+    }
+    });
+
+    const lotesDto = plainToInstance(ResponseVentaDto, lotes, {
+      excludeExtraneousValues: true,
+    });
+
+    if(lotesDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, lotesDto);
+    }
+    return ApiResponseDTO.success(API_MESSAGES.VENTAS.ALL, lotesDto);
+  } catch (error) {
+    Logger.error(`Error al obtener ventas: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
   }
+}
 
-  findOne(id: number) {
-    return `This action returns a #${id} venta`;
+
+
+
+async findOne(id: number): Promise<ApiResponseDTO<ResponseVentaDto | null>> {
+  Logger.log('Inicio - ventaID: '+id ,getMethodName());
+  try {
+    const venta = await this.ventaRepo.findOne({
+    relations: {
+      cliente: true,
+      sucursal: true,
+      ticketReceta: true,
+      usuario: true,
+      detalles: {
+        producto: true,
+      }
+    },
+    where: { id_venta: id}
+    });
+
+    if (!venta) {
+      return ApiResponseDTO.error(API_MESSAGES.VENTAS.NOT_FOUND, ErrorCodes.NOT_FOUND);
+    }
+
+    const ventaDTO = plainToInstance(ResponseVentaDto, venta, {
+      excludeExtraneousValues: true,
+    });
+
+    return ApiResponseDTO.success(API_MESSAGES.INFO.OK, ventaDTO);
+  } catch (error) {
+    Logger.error(`Error al obtener la venta: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
   }
+}
 
-  update(id: number, updateVentaDto: UpdateVentaDto) {
-    return `This action updates a #${id} venta`;
+
+
+async findAllBySucursal(idSucursal : number): Promise<ApiResponseDTO<ResponseVentaDto[] | null>> {
+  Logger.log('Inicio - sucursalID: '+ idSucursal ,getMethodName());
+  try {
+  const ventas = await this.ventaRepo.find({
+    relations: {
+      cliente: true,
+      sucursal: true,
+      ticketReceta: true,
+      usuario: true,
+      detalles: {
+        producto: true,
+      }
+    },
+    where: {
+      sucursal: {
+        id_sucursal: idSucursal
+      }
+    }
+  });
+
+    const ventasDto = plainToInstance(ResponseVentaDto, ventas, {
+      excludeExtraneousValues: true,
+    });
+
+    if(ventasDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, ventasDto);
+    }
+    return ApiResponseDTO.success(API_MESSAGES.VENTAS.ALL, ventasDto);
+  } catch (error) {
+    Logger.error(`Error al obtener ventas: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} venta`;
-  }
-
-
-
-
+}
 
 
 
