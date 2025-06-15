@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, BadRequestException, Query, ParseIntPipe } from '@nestjs/common';
 import { LoteService } from './lote.service';
 import { CreateLoteDto } from './dto/create-lote.dto';
 import { UpdateLoteDto } from './dto/update-lote.dto';
@@ -8,7 +8,6 @@ import { API_MESSAGES } from 'common/constants/messages';
 import { ResponseLoteDto } from './dto/response-lote.dto';
 import { ResponseLoteDetalleDto } from './dto/response-lote-detalle.dto';
 
-@ApiTags('lote')
 @Controller('lote')
 export class LoteController {
   constructor(private readonly loteService: LoteService) {}
@@ -31,6 +30,16 @@ export class LoteController {
     const lotes = await this.loteService.findAll();
     return lotes;
   }
+
+
+  @Get("/bySucursal")
+  @ApiOperation({ summary: 'Retorna todos los Lotes de una' })
+  @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.LOTES.ALL, type: ApiResponseDTO<ResponseLoteDto[]>, })
+  async findAllBySucursal(@Query('idSucursal', new ParseIntPipe()) idSucursal: number): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
+    const lotes = await this.loteService.findAllBySucursal(idSucursal);
+    return lotes;
+  }
+
 
   @Get(':id')
   @ApiOperation({ summary: 'Retorna un Lote por ID' })
