@@ -12,14 +12,21 @@ import { getMethodName } from 'common/utils/method-name';
 import { ErrorCodes } from 'common/constants/error-codes';
 import { plainToInstance } from 'class-transformer';
 import { API_MESSAGES } from 'common/constants/messages';
+import { DetalleVenta } from 'src/entities/detalle-venta.entity';
+import { ResponseProductoMasVendidosDto } from './dto/response-producto-mas-vendidos.dto';
+import { Deserializer } from 'v8';
 
 @Injectable()
 export class ProductoService {
   constructor(
     @InjectRepository(Producto)
     private readonly productoRepo: Repository<Producto>,
+
     @InjectRepository(Lote)
     private readonly loteRepo: Repository<Lote>,
+
+    @InjectRepository(DetalleVenta)
+    private readonly detalleVentaRepo: Repository<DetalleVenta>,
   ) {}
 
 
@@ -98,6 +105,47 @@ export class ProductoService {
   }
 
 
+
+  async getProductosMasVendidos(idSucursal: number): Promise<ApiResponseDTO<ResponseProductoMasVendidosDto[] | null>> {
+    const diasAntelacion = 30;
+    Logger.log(`Inicio - idSucursal: ${idSucursal}`,getMethodName());
+    try{
+    const fechaInicio = new Date();
+    fechaInicio.setDate(fechaInicio.getDate() - diasAntelacion);
+    
+    const topProductos = await this.detalleVentaRepo
+      .createQueryBuilder('detalle')
+      .select([
+    'producto.codigo_nacional AS "codigo_nacional"',
+    'producto.nombre AS "nombre"',
+    'producto.categoria AS "categoria"',
+    'producto.tipo AS "tipo"',
+    'SUM(detalle.cantidad) AS "cantidad_vendida"'
+      ])
+      .innerJoin('detalle.producto', 'producto')
+      .innerJoin('detalle.venta', 'venta') // Aquí 'venta' es correcto
+      .innerJoin('venta.sucursal', 'sucursal')
+      .where('sucursal.id_sucursal = :idSucursal', { idSucursal })
+      .andWhere('venta.fecha >= :fechaInicio', { fechaInicio })
+      .groupBy(
+        'producto.id_producto, producto.nombre, producto.codigo_nacional, producto.categoria, producto.tipo',
+      )
+      .orderBy('cantidad_vendida', 'DESC')
+      .limit(10)
+      .getRawMany();
+
+  
+  const productosResp = plainToInstance(ResponseProductoMasVendidosDto, topProductos, {
+    excludeExtraneousValues: true
+  });
+     return ApiResponseDTO.success(API_MESSAGES.PRODUCTOS.ALL, productosResp);
+
+
+   } catch (error) {
+     Logger.error(`Error al obtener productos con más vendidos de la sucursalID: ${idSucursal} - ${error.message}`, error.stack, getMethodName());
+     return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
+   }
+  }
 
 
 }

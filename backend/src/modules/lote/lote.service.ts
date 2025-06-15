@@ -13,7 +13,7 @@ import { SucursalService } from '../sucursal/sucursal.service';
 import { API_MESSAGES } from 'common/constants/messages';
 import { plainToInstance } from 'class-transformer';
 import { ResponseLoteDto } from './dto/response-lote.dto';
-import { ResponseLoteDetalleDto } from './dto/response-lote-detalle.dto';
+
 
 
 @Injectable()

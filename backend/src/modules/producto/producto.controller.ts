@@ -6,6 +6,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ResponseProductoDto } from './dto/response-producto.dto';
 import { ApiResponseDTO } from 'common/dto/api-response.dto';
 import { API_MESSAGES } from 'common/constants/messages';
+import { ResponseProductoMasVendidosDto } from './dto/response-producto-mas-vendidos.dto';
 
 @Controller('producto')
 export class ProductoController {
@@ -31,6 +32,17 @@ export class ProductoController {
     const productos = await this.productoService.getProductosStockCritico(idSucursal);
     return productos;
   }
+
+
+  @Get("/mas-vendidos/:idSucursal")
+  @ApiOperation({ summary: 'Retorna los 10 productos más vendidos de una sucursal con 30 días de antelacion' })
+  @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.LOTES.ALL, type: ApiResponseDTO<ResponseProductoMasVendidosDto[]>, })
+  async getProductosMasVendidos(@Param('idSucursal', new ParseIntPipe()) idSucursal: number): Promise<ApiResponseDTO<ResponseProductoMasVendidosDto[] | null>> {
+    const productos = await this.productoService.getProductosMasVendidos(idSucursal);
+    return productos;
+  }
+
+
 
 
   @Get(':id')
