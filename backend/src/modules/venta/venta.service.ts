@@ -386,9 +386,34 @@ async validarReceta( request : CreateVentaDto, prodsRequerenReceta: Producto[]) 
 
 
 
-  findAll() {
-    return `This action returns all venta`;
+async findAll(): Promise<ApiResponseDTO<ResponseVentaDto[] | null>> {
+  try {
+    const lotes = await this.ventaRepo.find({
+    relations: {
+      cliente: true,
+      sucursal: true,
+      ticketReceta: true,
+      usuario: true,
+      detalles: {
+        producto: true,
+      }
+    }
+    });
+
+    const lotesDto = plainToInstance(ResponseVentaDto, lotes, {
+      excludeExtraneousValues: true,
+    });
+
+    if(lotesDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, lotesDto);
+    }
+    return ApiResponseDTO.success(API_MESSAGES.VENTAS.ALL, lotesDto);
+  } catch (error) {
+    Logger.error(`Error al obtener ventas: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
   }
+}
+
 
 
 
@@ -425,7 +450,39 @@ async findOne(id: number): Promise<ApiResponseDTO<ResponseVentaDto | null>> {
 
 
 
+async findAllBySucursal(idSucursal : number): Promise<ApiResponseDTO<ResponseVentaDto[] | null>> {
+  Logger.log('Inicio - sucursalID: '+ idSucursal ,getMethodName());
+  try {
+  const ventas = await this.ventaRepo.find({
+    relations: {
+      cliente: true,
+      sucursal: true,
+      ticketReceta: true,
+      usuario: true,
+      detalles: {
+        producto: true,
+      }
+    },
+    where: {
+      sucursal: {
+        id_sucursal: idSucursal
+      }
+    }
+  });
 
+    const ventasDto = plainToInstance(ResponseVentaDto, ventas, {
+      excludeExtraneousValues: true,
+    });
+
+    if(ventasDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, ventasDto);
+    }
+    return ApiResponseDTO.success(API_MESSAGES.VENTAS.ALL, ventasDto);
+  } catch (error) {
+    Logger.error(`Error al obtener ventas: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
+  }
+}
 
 
 

@@ -89,8 +89,12 @@ export class LoteService {
 
 async findAll(): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
   try {
-    const lotes = await this.loteRepo.find({
-      relations: ['producto', 'proveedor', 'sucursal'], // para incluir relaciones necesarias
+  const lotes = await this.loteRepo.find({
+    relations: {
+      producto: true,
+      proveedor: true,
+      sucursal: true
+    }
     });
 
     const lotesDto = plainToInstance(ResponseLoteDto, lotes, {

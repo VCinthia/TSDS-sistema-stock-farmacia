@@ -33,7 +33,7 @@ export class LoteController {
 
 
   @Get("/bySucursal")
-  @ApiOperation({ summary: 'Retorna todos los Lotes de una' })
+  @ApiOperation({ summary: 'Retorna todos los Lotes de una sucursal' })
   @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.LOTES.ALL, type: ApiResponseDTO<ResponseLoteDto[]>, })
   async findAllBySucursal(@Query('idSucursal', new ParseIntPipe()) idSucursal: number): Promise<ApiResponseDTO<ResponseLoteDto[] | null>> {
     const lotes = await this.loteService.findAllBySucursal(idSucursal);
@@ -44,14 +44,14 @@ export class LoteController {
   @Get(':id')
   @ApiOperation({ summary: 'Retorna un Lote por ID' })
   @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.INFO.OK, type: ApiResponseDTO<ResponseLoteDto>, })
-   async findOne(@Param('id') id: string) : Promise<ApiResponseDTO<ResponseLoteDto | null>> {
+   async findOne(@Param('id') id: number) : Promise<ApiResponseDTO<ResponseLoteDto | null>> {
     return await this.loteService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Acualiza un Lote por ID' })
   @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.LOTES.UPDATED, type: ApiResponseDTO<ResponseLoteDto>, })
-   async update(@Param('id') id: string, @Body() updateLoteDto: UpdateLoteDto) : Promise<ApiResponseDTO<ResponseLoteDto | null>> {
+   async update(@Param('id') id: number, @Body() updateLoteDto: UpdateLoteDto) : Promise<ApiResponseDTO<ResponseLoteDto | null>> {
     return await this.loteService.update(+id, updateLoteDto);
   }
 
