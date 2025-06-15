@@ -9,7 +9,7 @@ export class Producto {
   @PrimaryGeneratedColumn()
   id_producto: number;
 
-  @Column({ unique: true })
+  @Column()
   codigo_nacional: string;
 
   @Column()
