@@ -9,6 +9,7 @@ export class ProductoController {
   constructor(private readonly productoService: ProductoService) {}
 
   @Post()
+  @ApiOperation({ summary: 'crrea un nuevo producto' })
   create(@Body() createProductoDto: CreateProductoDto) {
     return this.productoService.create(createProductoDto);
   }
@@ -20,17 +21,9 @@ export class ProductoController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Retorna un producto por ID' })
   findOne(@Param('id') id: string) {
     return this.productoService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProductoDto: UpdateProductoDto) {
-    return this.productoService.update(+id, updateProductoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productoService.remove(+id);
-  }
 }

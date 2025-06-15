@@ -31,12 +31,4 @@ export class ProductoService {
     return producto;
   }
   
-
-  update(id: number, updateProductoDto: UpdateProductoDto) {
-    return `This action updates a #${id} producto`;
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.productoRepo.delete(id);
-  }
 }
