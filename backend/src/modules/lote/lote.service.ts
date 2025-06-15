@@ -142,9 +142,14 @@ async findAllBySucursal(idSucursal : number): Promise<ApiResponseDTO<ResponseLot
 async findOne(id: number): Promise<ApiResponseDTO<ResponseLoteDto | null>> {
   try {
     const lote = await this.loteRepo.findOne({
-      where: { id_lote: id },
-      relations: ['producto', 'proveedor', 'sucursal'],
-    });
+    relations: {
+      producto: true,
+      proveedor: true,
+      sucursal: true,
+    },
+    where: { id_lote: id}
+    });  
+
 
     if (!lote) {
       return ApiResponseDTO.error(API_MESSAGES.LOTES.NOT_FOUND, ErrorCodes.NOT_FOUND);

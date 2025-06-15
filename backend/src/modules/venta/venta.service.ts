@@ -26,6 +26,8 @@ import { RangoDescuento } from 'src/entities/rango-descuento.entity';
 import { RangoDescuentoService } from '../rango-descuento/rango-descuento.service';
 import { ApiResponseDTO } from 'common/dto/api-response.dto';
 import { API_MESSAGES } from 'common/constants/messages';
+import { ResponseVentaDto } from './dto/response-venta.dto';
+import { ErrorCodes } from 'common/constants/error-codes';
 
 
 @Injectable()
@@ -388,9 +390,38 @@ async validarReceta( request : CreateVentaDto, prodsRequerenReceta: Producto[]) 
     return `This action returns all venta`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} venta`;
+
+
+async findOne(id: number): Promise<ApiResponseDTO<ResponseVentaDto | null>> {
+  Logger.log('Inicio - ventaID: '+id ,getMethodName());
+  try {
+    const venta = await this.ventaRepo.findOne({
+    relations: {
+      cliente: true,
+      sucursal: true,
+      ticketReceta: true,
+      usuario: true,
+      detalles: {
+        producto: true,
+      }
+    },
+    where: { id_venta: id}
+    });
+
+    if (!venta) {
+      return ApiResponseDTO.error(API_MESSAGES.VENTAS.NOT_FOUND, ErrorCodes.NOT_FOUND);
+    }
+
+    const ventaDTO = plainToInstance(ResponseVentaDto, venta, {
+      excludeExtraneousValues: true,
+    });
+
+    return ApiResponseDTO.success(API_MESSAGES.INFO.OK, ventaDTO);
+  } catch (error) {
+    Logger.error(`Error al obtener la venta: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
   }
+}
 
 
 
