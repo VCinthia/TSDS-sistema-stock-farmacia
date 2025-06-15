@@ -33,11 +33,6 @@ export class UsuarioController {
     return this.usuarioService.update(+id, updateUsuarioDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usuarioService.remove(+id);
-  }
-
   @Post('login')
   @ApiOperation({ summary: 'Valida Credenciales de usuario' })
   @HttpCode(HttpStatus.OK)
