@@ -29,16 +29,19 @@ export class Venta {
   puntos_generados: number;
 
   @ManyToOne(() => Sucursal, sucursal => sucursal.ventas)
+  @JoinColumn({ name: 'id_sucursal' })
   sucursal: Sucursal;    //Aqui se muestra el ID
 
   @ManyToOne(() => Cliente, cliente => cliente.ventas)
+  @JoinColumn({ name: 'id_cliente' })
   cliente: Cliente;  //Aqui se muestra el ID
 
   @ManyToOne(() => Usuario, usuario => usuario.ventas)
+  @JoinColumn({ name: 'id_usuario' })
   usuario: Usuario;  //Aqui se muestra el ID
 
   @OneToOne(() => TicketReceta, { nullable: true, cascade: true })  // Permite valores null
-  @JoinColumn()
+  @JoinColumn({ name: 'id_ticketReceta' })
   ticketReceta?: TicketReceta; //Aqui se muestra el ID
 
   @OneToMany(() => DetalleVenta, detalle => detalle.venta, { cascade: true })

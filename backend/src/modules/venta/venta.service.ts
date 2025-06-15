@@ -219,7 +219,7 @@ private async crearTicketReceta(requestBody: CreateVentaDto, productosDB: Produc
     ticketReceta.fecha_emision = recetaValidada.fecha_emision;
     ticketReceta.fecha_expiracion = recetaValidada.fecha_expiracion;
     ticketReceta.fecha_recepcion = new Date();
-    ticketReceta.maricula_medico = recetaValidada.matricula_medico;
+    ticketReceta.matricula_medico = recetaValidada.matricula_medico;
     ticketReceta.dni_paciente = recetaValidada.dni_paciente;
 
     // Crear relación con productos
