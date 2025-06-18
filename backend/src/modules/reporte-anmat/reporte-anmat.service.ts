@@ -55,7 +55,7 @@ async reportarRecetasANMAT(createReproteAnmatDTO: CreateReporteAnmatDto): Promis
     }else if (recetasNoEnviadas.length == codigos.length){
        return ApiResponseDTO.error(API_MESSAGES.REPORTE_ANMAT.NO_ENVIADOS, "" );
     }else { 
-      return ApiResponseDTO.error(API_MESSAGES.REPORTE_ANMAT.PARCIALMENTE_ENVIADO+ `. Recetas no Reportadas: ${JSON.stringify(recetasNoEnviadas)}`, "" );
+      return ApiResponseDTO.error(API_MESSAGES.REPORTE_ANMAT.PARCIALMENTE_ENVIADO+ `. Recetas no Reportadas: ${recetasNoEnviadas.join(', ')}`, "" );
 
     }
 
