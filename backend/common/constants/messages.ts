@@ -21,6 +21,11 @@ export const API_MESSAGES = {
     SIN_REPORTE: 'Listado de tickets no reportados, obtenidos exitosamente',
     NOT_FOUND: 'Ticket receta no encontrado'
   },
+    REPORTE_ANMAT: {
+    ALL_ENVIADO: 'Reportes enviados exitosamente',
+    PARCIALMENTE_ENVIADO: 'Reportes enviados parcialmente',
+    NO_ENVIADOS: 'No se envió ningun reporte',
+  },
   ERRORES: {
     INTERNO: 'Lote creado exitosamente',
     NOT_FOUND: 'Lote no encontrado',
