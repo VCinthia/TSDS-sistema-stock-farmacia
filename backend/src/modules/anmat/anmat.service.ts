@@ -6,6 +6,10 @@ import { ANMAT_API } from './constants/api.config';
 import { ResponseConsultaRecetaAnmatDto } from './dto/response-consulta-receta.dto';
 import { getMethodName } from 'common/utils/method-name';
 import { plainToInstance } from 'class-transformer';
+import { ResponseReporteRecetaAnmatDto } from './dto/response-reporte-receta.dto';
+import { response } from 'express';
+import { ne } from '@faker-js/faker/.';
+import { ResponseReporteAnmatDto } from '../reporte-anmat/dto/response-reporte-anmat.dto';
 
 
 @Injectable()
@@ -50,10 +54,9 @@ async consultarRecetaANMAT(codigo: string): Promise<ResponseConsultaRecetaAnmatD
       recetaActual.data.valida = false;
       recetaActual.data.utilizada =true;
 
-    const newData = {
-      data: recetaActual.data
-    }
-
+      const newData = {
+        data: recetaActual.data
+      }
       const response = await firstValueFrom(
         this.httpService.patch(url, newData, { headers: { 'Content-Type': 'application/json' } })
       );
@@ -68,6 +71,26 @@ async consultarRecetaANMAT(codigo: string): Promise<ResponseConsultaRecetaAnmatD
   }
 
 
+
+
+  async enviarRecetaANMAT(codigo: string): Promise<ResponseReporteRecetaAnmatDto> {
+    const url = `${this.baseUrl}${ANMAT_API.ENDPOINTS.RECETA_REPORTE}`;
+    Logger.log(`POST a ${url}`, getMethodName());
+
+    const body = { codigo: codigo };
+    // Service Call
+    const response = await firstValueFrom(
+        this.httpService.post(url, body, { headers: { 'Content-Type': 'application/json' } })
+    );
+    Logger.log(`RespuestaANMAT : ${JSON.stringify(response.data)}`,getMethodName());
+    return this.parsearRespuestaANMATReporteReceta(response.data);
+}
+
+
+
+//METODOS PRIVADOS
+//METODOS PRIVADOS
+
   private parsearRespuestaANMATConsultaReceta(responseAnmat: Object): ResponseConsultaRecetaAnmatDto {
 
     const dataAnmat = responseAnmat['data'];
@@ -77,6 +100,13 @@ async consultarRecetaANMAT(codigo: string): Promise<ResponseConsultaRecetaAnmatD
         }
       );
      return allResponseDto;
+
+  }
+
+
+    private parsearRespuestaANMATReporteReceta(responseAnmat: Object): ResponseReporteRecetaAnmatDto {
+    const responseDTO = plainToInstance(ResponseReporteRecetaAnmatDto, responseAnmat);
+     return responseDTO;
 
   }
 
@@ -95,5 +125,5 @@ async consultarRecetaANMAT(codigo: string): Promise<ResponseConsultaRecetaAnmatD
   }
 
 
-
+ 
 }

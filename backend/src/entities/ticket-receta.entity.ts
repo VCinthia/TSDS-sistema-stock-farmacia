@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ReporteAnmat } from "./reporte-anmat.entity";
 import { ProductoPrescritoDto } from "src/modules/venta/dto/receta-valida.dto";
 
@@ -23,12 +23,12 @@ export class TicketReceta {
   numero_receta: string;
 
   @Column()
-  maricula_medico: string; 
+  matricula_medico: string; 
 
   @Column()
   dni_paciente: string; 
 
-  @ManyToMany(() => ReporteAnmat, reporte => reporte.tickets)
-  @JoinTable({ name: 'reporte_ticket' }) // Nombre de la tabla intermedia
-  reportes: ReporteAnmat[];
+  @OneToOne(() => ReporteAnmat, {nullable: true, cascade: true , onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'id_reporteAnmat' }) 
+  reporteAnmat?: ReporteAnmat; //Aqui se muestra el ID 
 }

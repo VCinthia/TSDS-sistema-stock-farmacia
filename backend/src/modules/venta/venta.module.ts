@@ -26,7 +26,6 @@ import { DetalleVenta } from 'src/entities/detalle-venta.entity';
 
 @Module({
   imports: [
-    HttpModule, 
     TypeOrmModule.forFeature([
       Venta,
       Cliente,
@@ -36,10 +35,10 @@ import { DetalleVenta } from 'src/entities/detalle-venta.entity';
       Sucursal,
       TicketReceta,
       Lote,
-      AnmatService,
       RangoDescuento,
       DetalleVenta,
-    ])
+    ]),
+    HttpModule, 
   ],  
   controllers: [VentaController],
   providers: [

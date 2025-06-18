@@ -12,6 +12,5 @@ export class ReporteAnmat {
   @Column()
   respuesta_api: string;
 
-  @ManyToMany(() => TicketReceta, ticket => ticket.reportes)
-  tickets: TicketReceta[];
+
 }
