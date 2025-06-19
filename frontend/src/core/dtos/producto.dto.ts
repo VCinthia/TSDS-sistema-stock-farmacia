@@ -1,5 +1,6 @@
 export class ProductoDTO {
     id_producto?: string;
+    codigo_nacional?: string;
     nombre?: string;
     categoria?: string;
     tipo?: string;

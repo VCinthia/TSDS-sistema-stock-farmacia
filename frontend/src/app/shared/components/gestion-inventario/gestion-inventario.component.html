@@ -65,3 +65,6 @@
   <mat-spinner diameter="60" color="accent"></mat-spinner>
   <p>Cargando datos...</p>
 </div>
+<div *ngIf="lotesFiltrados.length === 0" class="mensaje-no-encontrado">
+  Producto no encontrado
+</div>
