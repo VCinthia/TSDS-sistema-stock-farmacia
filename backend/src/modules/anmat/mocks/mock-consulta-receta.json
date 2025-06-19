@@ -4,7 +4,7 @@
     "success": true,
     "codeError": 0,
     "data": {
-      "valida": true,
+      "valida": false,
       "detalle": [
         {"codigo": "MED-0005", "nombre": "Enalapril 10mg tableta", "cantidad": 1},
         {"codigo": "MED-0009", "nombre": "Amoxicilina 500mg tableta", "cantidad": 20}
@@ -13,7 +13,7 @@
       "matriculaMedico": "12345",
       "emision": "2025-06-08",
       "expiracion": "2025-07-08",
-      "utilizada": false
+      "utilizada": true
     }
   },
   {

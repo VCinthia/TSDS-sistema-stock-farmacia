@@ -1,0 +1,63 @@
+<div class="formContainer" [formGroup]="ventaForm">
+  <h2>Agregar venta</h2>
+
+  <!-- DNI -->
+  <mat-form-field appearance="fill">
+    <mat-label>DNI Cliente</mat-label>
+    <input matInput formControlName="dniCliente" />
+    <mat-error *ngIf="ventaForm.get('dniCliente')?.hasError('required')">
+      Por favor, ingrese un DNI
+    </mat-error>
+  </mat-form-field>
+
+  <!-- 🔧 Agregamos este contenedor -->
+  <div formArrayName="productosSeleccionados">
+    <div
+      class="productoCantidadContainer"
+      *ngFor="let prodGroup of productosSeleccionados.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <mat-form-field appearance="fill" class="w-1/2">
+        <mat-label>Seleccione producto {{ i + 1 }}</mat-label>
+        <mat-select formControlName="idProducto">
+          <mat-option *ngFor="let prod of productos" [value]="prod.id_producto">
+            {{ prod.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-1/2">
+        <mat-label>Cantidad</mat-label>
+        <input matInput type="number" formControlName="cantidad" />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <app-boton-primario (click)="agregarSelector()" buttonText="Añadir otro producto">
+  </app-boton-primario>
+
+
+  <ng-container *ngIf="esRecetaObligatoria()" >
+  <mat-form-field appearance="fill" class="inputRecetaContainer">
+    <mat-label>Número receta</mat-label>
+    <input matInput formControlName="numeroReceta" />
+    <mat-error *ngIf="ventaForm.get('numeroReceta')?.hasError('required')">
+      Por favor, ingrese el número de receta
+    </mat-error>
+  </mat-form-field>
+</ng-container>
+
+  <!-- Botones -->
+  <div class="btnContainer">
+    <app-boton-secundario (click)="cerrarModal()" buttonText="Cancelar">
+    </app-boton-secundario>
+
+    <ng-container *ngIf="ventaForm.invalid; else botonActivo">
+      <app-boton-inactivo buttonText="Agregar Venta"></app-boton-inactivo>
+    </ng-container>
+    <ng-template #botonActivo>
+      <app-boton-primario (click)="agregarVenta()" buttonText="Agregar Lote">
+      </app-boton-primario>
+    </ng-template>
+  </div>
+</div>
