@@ -15,6 +15,12 @@ export const API_MESSAGES = {
     ALL: 'Listado de productos obtenido exitosamente',
     NOT_FOUND: 'Producto no encontrado'
   },
+  CLIENTES: {
+    CREATED: 'Cliente creado exitosamente',
+    ALL: 'Listado de clientes obtenido exitosamente',
+    NOT_FOUND: 'Cliente no encontrado',
+    FIDELIZACION: 'Listado de fideliacion obtenido correctamente',
+  },
   TICKET_RECETA: {
     CREATED: 'Ticket receta creado exitosamente',
     ALL: 'Listado de tickets receta obtenido exitosamente',

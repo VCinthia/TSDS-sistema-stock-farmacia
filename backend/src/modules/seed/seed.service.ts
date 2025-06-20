@@ -85,8 +85,8 @@ export class SeedService {
     if (count === 0) {
       await this.clienteRepo.save([
         {nombre: 'Juan Pérez',dni: '30123456', puntos_fidelizacion: 1500,},
-        {nombre: 'María Gómez',dni: '30234567', puntos_fidelizacion: 1200,},
-        {nombre: 'Carlos López', dni: '30345678', puntos_fidelizacion: 980,},
+        {nombre: 'María Gómez',dni: '30234567', puntos_fidelizacion: 121100,},
+        {nombre: 'Carlos López', dni: '30345678', puntos_fidelizacion: 98000,},
         {nombre: 'Laura Fernández', dni: '30456789', puntos_fidelizacion: 2100,},
     ]);
     console.log('Clientes insertados');
