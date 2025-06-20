@@ -26,7 +26,7 @@ import { DetalleVenta } from 'src/entities/detalle-venta.entity';
     LoteService, 
     ProductoService,
     ProveedorService,
-    SucursalService
+    SucursalService,
   ],
 })
 export class LoteModule {}

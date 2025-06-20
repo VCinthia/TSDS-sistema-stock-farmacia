@@ -28,6 +28,8 @@ import { ApiResponseDTO } from 'common/dto/api-response.dto';
 import { API_MESSAGES } from 'common/constants/messages';
 import { ResponseVentaDto } from './dto/response-venta.dto';
 import { ErrorCodes } from 'common/constants/error-codes';
+import { PdfMakeService } from '../pdf-make/pdf-make.service';
+import { PdfGenerateResult } from '../pdf-make/interfaces/pdf.interface';
 
 
 @Injectable()
@@ -41,11 +43,10 @@ export class VentaService {
     private readonly clienteService : ClienteService,
     private readonly sucursalService : SucursalService,
     private readonly usuarioService : UsuarioService,
-    private readonly productoService : ProductoService,
-    private readonly ticketService : TicketRecetaService,
     private readonly loteService: LoteService,
     private readonly anmatService: AnmatService,
     private readonly rangoService : RangoDescuentoService,
+    private readonly pdfMakeService: PdfMakeService,
     private dataSource: DataSource,
   ){}
 
@@ -128,8 +129,57 @@ async create(requesBody: CreateVentaDto) : Promise<ApiResponseDTO<Venta | null>>
   }
 }
 
+ private async findVentasById(idList: number[]): Promise<ApiResponseDTO<ResponseVentaDto[] | null>> {
+  Logger.log(`Inicio id: ${idList}`, getMethodName());
+  try {
+    const ventas = await this.ventaRepo.find({
+    relations: {
+      cliente: true,
+      sucursal: true,
+      ticketReceta: true,
+      usuario: true,
+      detalles: {
+        producto: true,
+      }
+    }
+    });
+
+    const ventasDto = plainToInstance(ResponseVentaDto, ventas, {
+      excludeExtraneousValues: true,
+    });
+
+    if(ventasDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, ventasDto);
+    }
+
+    return ApiResponseDTO.success(API_MESSAGES.VENTAS.ALL, ventasDto);
+  } catch (error) {
+    Logger.error(`Error al obtener ventas: ${error.message}`, error.stack, getMethodName());
+    return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
+  }
+}
 
 
+async generarReporteVentasPdfByIdList(idVentas: number[]): Promise<Buffer> {
+  Logger.log(`Inicio id: ${idVentas}`, getMethodName());
+  try {
+    // Obtener lotes
+    const ventasResponse = await this.findVentasById(idVentas);
+      
+    if (!ventasResponse.success || !ventasResponse.data || ventasResponse.data.length === 0) {
+      throw new Error(API_MESSAGES.INFO.EMPTY);
+    }
+      
+    // Generar PDF
+    const pdfResult: PdfGenerateResult = await this.pdfMakeService.generateReporteVentasPdf(ventasResponse.data);
+      
+    //Devolver solo el buffer
+    return pdfResult.buffer;
+  } catch (error) {
+    Logger.error(`Error generando PDF: ${error.message}`, error.stack, getMethodName());
+    throw new Error(`Error generando PDF: ${error.message}`);
+  }
+}
 
 
 
@@ -389,7 +439,7 @@ async validarReceta( request : CreateVentaDto, prodsRequerenReceta: Producto[]) 
 
 async findAll(): Promise<ApiResponseDTO<ResponseVentaDto[] | null>> {
   try {
-    const lotes = await this.ventaRepo.find({
+    const ventas = await this.ventaRepo.find({
     relations: {
       cliente: true,
       sucursal: true,
@@ -401,14 +451,14 @@ async findAll(): Promise<ApiResponseDTO<ResponseVentaDto[] | null>> {
     }
     });
 
-    const lotesDto = plainToInstance(ResponseVentaDto, lotes, {
+    const ventasDto = plainToInstance(ResponseVentaDto, ventas, {
       excludeExtraneousValues: true,
     });
 
-    if(lotesDto.length === 0){
-      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, lotesDto);
+    if(ventasDto.length === 0){
+      return ApiResponseDTO.success(API_MESSAGES.INFO.EMPTY, ventasDto);
     }
-    return ApiResponseDTO.success(API_MESSAGES.VENTAS.ALL, lotesDto);
+    return ApiResponseDTO.success(API_MESSAGES.VENTAS.ALL, ventasDto);
   } catch (error) {
     Logger.error(`Error al obtener ventas: ${error.message}`, error.stack, getMethodName());
     return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);

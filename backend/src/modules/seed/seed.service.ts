@@ -11,6 +11,7 @@ import { Rol } from 'src/enums/rol.enum';
 import { Segmento } from 'src/enums/segmento.enum';
 import { TipoProducto } from 'src/enums/tipo-producto.enum';
 import { Repository } from 'typeorm';
+import { Lote } from 'src/entities/lote.entity';
 
 @Injectable()
 export class SeedService {
@@ -21,6 +22,7 @@ export class SeedService {
     @InjectRepository(Cliente) private clienteRepo: Repository<Cliente>,
     @InjectRepository(Usuario) private usuarioRepo: Repository<Usuario>,
     @InjectRepository(RangoDescuento) private rangoDescuentoRepo: Repository<RangoDescuento>,
+    @InjectRepository(Lote) private loteRepo: Repository<Lote>,
   ) {}
 
   async seed() {
@@ -30,6 +32,7 @@ export class SeedService {
     await this.seedClientes();
     await this.seedUsuarios();
     await this.seedRangoDescuento(); 
+    await this.seedLotes();
   }
 
   private async seedSucursales() {
@@ -119,6 +122,29 @@ export class SeedService {
       console.log('RangoDescueno insertados');
     }
   }
+
+
+  private async seedLotes() {
+    const count = await this.loteRepo.count();
+    if (count === 0) {
+      const lotes = this.loteRepo.create([
+        { fecha_vencimiento: '2029-05-15', cantidad: 50, producto: { id_producto:10} as any, proveedor: { id_proveedor:2} as any, sucursal: { id_sucursal:1} as any,},
+        { fecha_vencimiento: '2031-02-20', cantidad: 48, producto: { id_producto:9} as any, proveedor: { id_proveedor:1} as any, sucursal: { id_sucursal:1} as any,},
+        { fecha_vencimiento: '2028-07-27', cantidad: 20, producto: { id_producto:8} as any, proveedor: { id_proveedor:2} as any, sucursal: { id_sucursal:2} as any,},
+        { fecha_vencimiento: '2027-08-14', cantidad: 35, producto: { id_producto:1} as any, proveedor: { id_proveedor:3} as any, sucursal: { id_sucursal:2} as any,},
+        { fecha_vencimiento: '2029-02-15', cantidad: 45, producto: { id_producto:1} as any, proveedor: { id_proveedor:1} as any, sucursal: { id_sucursal:1} as any,},
+        { fecha_vencimiento: '2032-08-17', cantidad: 61, producto: { id_producto:5} as any, proveedor: { id_proveedor:2} as any, sucursal: { id_sucursal:1} as any,},
+        { fecha_vencimiento: '2029-03-29', cantidad: 72, producto: { id_producto:3} as any, proveedor: { id_proveedor:2} as any, sucursal: { id_sucursal:1} as any,},
+
+      ])
+      await this.loteRepo.save(lotes);
+
+      console.log('Lotes insertados');
+    }
+  }
+ 
+  
+
 
 
 }

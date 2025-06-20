@@ -3,7 +3,7 @@ import { CreateLoteDto } from './dto/create-lote.dto';
 import { UpdateLoteDto } from './dto/update-lote.dto';
 import { Lote } from 'src/entities/lote.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, LessThanOrEqual, MoreThan, Repository } from 'typeorm';
+import { Between, In, LessThanOrEqual, MoreThan, Repository } from 'typeorm';
 import { ApiResponseDTO } from 'common/dto/api-response.dto';
 import { ErrorCodes } from 'common/constants/error-codes';
 import { getMethodName } from 'common/utils/method-name';
@@ -13,7 +13,6 @@ import { SucursalService } from '../sucursal/sucursal.service';
 import { API_MESSAGES } from 'common/constants/messages';
 import { plainToInstance } from 'class-transformer';
 import { ResponseLoteDto } from './dto/response-lote.dto';
-
 
 
 @Injectable()
@@ -26,7 +25,9 @@ export class LoteService {
     private readonly productoService : ProductoService,
     private readonly proveedorService : ProveedorService,
     private readonly sucursalService : SucursalService,
-  ) {}
+
+  ) {
+  }
 
 
 
@@ -258,9 +259,6 @@ async findProximosAVencerBySucursal(diasAntelacion: number = 10, idSucursal: num
     return ApiResponseDTO.error(error.message, ErrorCodes.INTERNAL_ERROR);
   }
 }
-
-
-
 
 
 

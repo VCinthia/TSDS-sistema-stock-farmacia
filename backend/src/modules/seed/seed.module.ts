@@ -7,10 +7,19 @@ import { Producto } from 'src/entities/producto.entity';
 import { Cliente } from 'src/entities/cliente.entity';
 import { Usuario } from 'src/entities/usuario.entity';
 import { RangoDescuento } from 'src/entities/rango-descuento.entity';
+import { Lote } from 'src/entities/lote.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Sucursal, Proveedor, Producto, Cliente, Usuario, RangoDescuento]),
+    TypeOrmModule.forFeature([
+      Sucursal, 
+      Proveedor, 
+      Producto, 
+      Cliente, 
+      Usuario, 
+      RangoDescuento,
+      Lote
+    ]),
   ],  
   providers: [SeedService],
   exports: [SeedService],

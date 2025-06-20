@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Query, ParseIntPipe, Header, StreamableFile } from '@nestjs/common';
 import { VentaService } from './venta.service';
 import { CreateVentaDto } from './dto/create-venta.dto';
 import { UpdateVentaDto } from './dto/update-venta.dto';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiProduces, ApiResponse } from '@nestjs/swagger';
 import { ApiResponseDTO } from 'common/dto/api-response.dto';
 import { Venta } from 'src/entities/venta.entity';
 import { API_MESSAGES } from 'common/constants/messages';
@@ -19,6 +19,22 @@ export class VentaController {
   async create(@Body() createVentaDto: CreateVentaDto) :  Promise<ApiResponseDTO<Venta| null>> {
     return this.ventaService.create(createVentaDto);
   }
+
+
+  @Post('reporte/pdf') 
+  @ApiOperation({summary: 'Generar reporte de ventas en PDF' })
+  @Header('Content-Type', 'application/pdf')
+  @Header('Content-Disposition', 'attachment; filename=reporte_ventas.pdf')
+  @ApiConsumes('application/json')
+  @ApiProduces('application/pdf')
+  @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.VENTAS.ALL, content: {'application/pdf': { schema: { type: 'string', format: 'binary' }}}, })
+  async generarReporteVentasPdfByIdList( @Body() idVentas: number[]) : Promise<StreamableFile> {
+    const pdfBuffer = await this.ventaService.generarReporteVentasPdfByIdList(idVentas);
+    //Retorna el PDF en Binario
+    return new StreamableFile(pdfBuffer);
+  }
+
+
 
    @Get()
    @ApiOperation({ summary: 'Retorna todas las Ventas' })
