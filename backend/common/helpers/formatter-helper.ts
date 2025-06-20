@@ -11,6 +11,28 @@ export function formatCurrency(value: number | string): string {
 }
 
 
+
+export function formatPercentage(value: number | string): string {
+  // Convertir a número si es string
+  const numberValue = typeof value === 'string' ? 
+    parseFloat(value) : 
+    value;
+  
+  // Validar que sea un número válido
+  if (isNaN(numberValue)) {
+    return '0%';
+  }
+  
+  // Formatear con separador decimal de coma
+  return new Intl.NumberFormat('es-AR', {
+    style: 'percent',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  }).format(numberValue / 100);
+}
+
+
+
 // Método para formatear fechas con hora
 export function formatDateTime(date: Date): string {
   const d = new Date(date);

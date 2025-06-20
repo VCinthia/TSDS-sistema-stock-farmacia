@@ -3,7 +3,7 @@ import * as pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts'; 
 import { PdfContent, PdfDocumentDefinition, PdfFonts, PdfGenerateResult, PdfStyleDefinition, PdfTableRow } from './interfaces/pdf.interface';
 import { DetalleVentaDTO, ResponseVentaDto } from '../venta/dto/response-venta.dto';
-import { formatCurrency, formatDateTime } from 'common/helpers/formatter-helper';
+import { formatCurrency, formatDateTime, formatPercentage } from 'common/helpers/formatter-helper';
 
 @Injectable()
 export class PdfMakeService {
@@ -258,7 +258,7 @@ private createVentaHeaderRow(venta: ResponseVentaDto): PdfTableRow[] {
 
   return [
     {
-      text: `VENTA # - ${fechaFormatted} `,
+      text: `VENTA # ${venta.id_venta} - ${fechaFormatted} `,
       style: 'ventaHeader',
       colSpan: 5,
       alignment: 'left'
@@ -300,13 +300,9 @@ private createNoDetailsRow(): PdfTableRow[] {
 }
 
 private createVentaSummaryRow(venta: ResponseVentaDto): PdfTableRow[] {
-  const puntosInfo = venta.puntos_generados > 0 ? 
-    `Puntos generados: ${venta.puntos_generados}` : 
-    'Sin puntos generados';
-
   return [
     {
-      text: `Cliente: ${venta.cliente?.nombre || 'N/A'} | Total: ${formatCurrency(venta.total_final)} | ${puntosInfo}`,
+      text: `Cliente: ${venta.cliente?.nombre || 'N/A'} | Descuento: ${formatPercentage(venta.descuento_porcentaje)} | Total con descuento: ${formatCurrency(venta.total_final)} `,
       style: 'ventaSummary',
       colSpan: 5,
       alignment: 'right'
