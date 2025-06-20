@@ -18,7 +18,7 @@ export type PdfContent =
  * @property alignment - Alineación del contenido
  */
 export interface PdfTableRow {
-  text: string;
+  text: string | { text: string; style: string; }[];
   style?: string;
   alignment?: PdfAlignment;
   colSpan?: number;

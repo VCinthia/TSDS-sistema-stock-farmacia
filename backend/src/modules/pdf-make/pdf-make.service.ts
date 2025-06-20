@@ -8,6 +8,7 @@ import { formatCurrency, formatDateTime, formatPercentage } from 'common/helpers
 @Injectable()
 export class PdfMakeService {
   private readonly fonts: PdfFonts;
+  private readonly numeroColumnas: number = 4;
 
 
   constructor() {
@@ -79,7 +80,7 @@ export class PdfMakeService {
       font: 'Roboto'
     },
     subheader: {
-      fontSize: 12,
+      fontSize: 10,
       bold: true,
       color: '#444444',
       margin: [0, 0, 0, 15],
@@ -87,7 +88,7 @@ export class PdfMakeService {
     },
     tableHeader: {
       bold: true,
-      fontSize: 10,
+      fontSize: 9,
       color: 'black',
       fillColor: '#f2f2f2',
       alignment: 'center',
@@ -100,15 +101,9 @@ export class PdfMakeService {
     },
     ventaHeader: {
       bold: true,
-      fontSize: 11,
+      fontSize: 10,
       fillColor: '#E9F1FA',
       margin: [0, 5, 0, 2],
-      font: 'Roboto'
-    },
-    ventaSummary: {
-      fontSize: 9,
-      bold: true,
-      margin: [0, 3, 0, 5],
       font: 'Roboto'
     },
     noDetails: {
@@ -121,6 +116,26 @@ export class PdfMakeService {
     separator: {
       fontSize: 4,
       margin: [0, 5, 0, 10]
+    },
+    summaryLabel: {
+      bold: true,
+      fontSize: 9,
+      font: 'Roboto'
+    },
+    summaryValue: {
+      bold: false,
+      fontSize: 9,
+      font: 'Roboto'
+    },
+    ventaSummary: {
+      font: 'Roboto',
+      margin: [0, 10, 0, 5],
+      lineHeight: 1.3,
+      background: '#f9f9f9',
+      border: [false, false, false, true],
+      borderColor: '#eeeeee',
+      borderLineWidth: 1,
+      padding: [5, 10, 5, 10]
     }
   };
 
@@ -149,52 +164,6 @@ private createHeaderCell(text: string): PdfTableRow {
     };
   }
 
-  private createDataRow2(venta: ResponseVentaDto, detalle: DetalleVentaDTO): PdfTableRow[] {
-  // Calcular precio total
-  const precioTotal = detalle.cantidad * detalle.precio_unitario;
-
-  return [
-    this.createDateCell(venta.fecha),
-    { 
-      text: detalle.producto?.nombre || 'Producto desconocido', 
-      style: 'tableCell' 
-    },
-    { 
-      text: detalle.cantidad.toString(), 
-      style: 'tableCell',
-      alignment: 'right'
-    },
-    { 
-      text: formatCurrency(detalle.precio_unitario), 
-      style: 'tableCell',
-      alignment: 'right'
-    },
-    { 
-      text: formatCurrency(precioTotal), 
-      style: 'tableCell',
-      alignment: 'right'
-    },
-    { 
-      text: venta.ticketReceta?.numero_receta || 'N/A', 
-      style: 'tableCell',
-      alignment: 'center'
-    }
-  ];
-}
-
-private createDateCell(date: Date): PdfTableRow {
-  const fechaVenta = new Date(date);
-  const fechaFormatted = fechaVenta.toLocaleDateString('es-AR');
-  const horaFormatted = fechaVenta.toLocaleTimeString('es-AR', {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-  
-  return {
-    text: `${fechaFormatted}\n${horaFormatted}`, 
-    style: 'tableCell'
-  };
-}
 
 
 
@@ -245,7 +214,7 @@ private createDateCell(date: Date): PdfTableRow {
   // 4. Retornar la tabla
   return {
     table: {
-      widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+      widths: ['*', 'auto', 'auto', 'auto'],
       body: tableBody
     }
   };
@@ -258,12 +227,11 @@ private createVentaHeaderRow(venta: ResponseVentaDto): PdfTableRow[] {
 
   return [
     {
-      text: `VENTA # ${venta.id_venta} - ${fechaFormatted} `,
+      text: `VENTA #${venta.id_venta} - ${fechaFormatted} `,
       style: 'ventaHeader',
-      colSpan: 5,
+      colSpan: this.numeroColumnas,
       alignment: 'left'
     },
-    this.createOneEmptyCell(),
     this.createOneEmptyCell(),
     this.createOneEmptyCell(),
     this.createOneEmptyCell()
@@ -278,7 +246,6 @@ private createDetailHeadersRow(): PdfTableRow[] {
     this.createHeaderCell('Unidades'),
     this.createHeaderCell('Precio Unitario'),
     this.createHeaderCell('Precio Total'),
-    this.createHeaderCell('Receta')
   ];
 }
 
@@ -289,10 +256,9 @@ private createNoDetailsRow(): PdfTableRow[] {
     {
       text: 'SIN DETALLES DE PRODUCTOS',
       style: 'noDetails',
-      colSpan: 5,
+      colSpan: this.numeroColumnas,
       alignment: 'center'
     },
-    this.createOneEmptyCell(),
     this.createOneEmptyCell(),
     this.createOneEmptyCell(),
     this.createOneEmptyCell()// Celdas vacías para completar el colspan
@@ -300,14 +266,24 @@ private createNoDetailsRow(): PdfTableRow[] {
 }
 
 private createVentaSummaryRow(venta: ResponseVentaDto): PdfTableRow[] {
+  // Texto enriquecido con diferentes estilos
+  const richText = [
+    { text: 'Cliente: ', style: 'summaryLabel' },
+    { text: `${venta.cliente?.nombre || 'N/A'}`, style: 'summaryValue' },
+    { text: '   |   Receta: ', style: 'summaryLabel' },
+    { text: `${venta.ticketReceta?.numero_receta || 'N/A'}`, style: 'summaryValue' },
+    { text: '   |   Descuento: ', style: 'summaryLabel' },
+    { text: `${formatPercentage(venta.descuento_porcentaje)}`, style: 'summaryValue' },
+    { text: '   |   Total: ', style: 'summaryLabel' },
+    { text: formatCurrency(venta.total_final), style: 'summaryValue' }
+  ];
   return [
     {
-      text: `Cliente: ${venta.cliente?.nombre || 'N/A'} | Descuento: ${formatPercentage(venta.descuento_porcentaje)} | Total con descuento: ${formatCurrency(venta.total_final)} `,
+      text: richText,
       style: 'ventaSummary',
-      colSpan: 5,
+      colSpan: this.numeroColumnas,
       alignment: 'right'
     },
-    this.createOneEmptyCell(),
     this.createOneEmptyCell(),
     this.createOneEmptyCell(),
     this.createOneEmptyCell()// Celdas vacías para completar el colspan
@@ -319,10 +295,9 @@ private createSeparatorRow(): PdfTableRow[] {
     {
       text: '',
       style: 'separator',
-      colSpan: 5,
+      colSpan: this.numeroColumnas,
       border: [false, false, false, true]
     },
-    this.createOneEmptyCell(),
     this.createOneEmptyCell(),
     this.createOneEmptyCell(),
     this.createOneEmptyCell()// Celdas vacías para completar el colspan
@@ -351,11 +326,6 @@ private createDataRow(venta: ResponseVentaDto, detalle: DetalleVentaDTO): PdfTab
       text: formatCurrency(precioTotal), 
       style: 'tableCell',
       alignment: 'right'
-    },
-    { 
-      text: venta.ticketReceta?.numero_receta || 'N/A', 
-      style: 'tableCell',
-      alignment: 'center'
     }
   ];
 }
