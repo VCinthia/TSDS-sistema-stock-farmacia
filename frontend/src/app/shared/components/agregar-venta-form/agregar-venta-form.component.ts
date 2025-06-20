@@ -158,7 +158,7 @@ export class AgregarVentaFormComponent implements OnInit {
     this.ventaService.crearVenta(payload).subscribe({
       next: (res) => {
         console.log('Respuesta del backend:', res);
-        this.toastr.success('Venta agregado exitosamente');
+        this.toastr.success('Venta agregada exitosamente');
         this.dialogRef.close();
       },
       error: (err) => {

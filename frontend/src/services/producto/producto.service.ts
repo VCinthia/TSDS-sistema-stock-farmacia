@@ -20,4 +20,14 @@ export class ProductoService {
   const url = `${this.BASE_URL}/producto/${id}`;
   return this.http.get<ProductoDTO>(url);
 }
+
+  getProductosStockCritico(idSucursal: number):Observable<any> {
+  const url = `${this.BASE_URL}/producto/stock-critico/${idSucursal}'`;
+  return this.http.get(url);
+}
+
+  getProductosMasVendidos(idSucursal: number):Observable<any> {
+  const url = `${this.BASE_URL}/producto/mas-vendidos/${idSucursal}`;
+  return this.http.get(url);
+}
 }
