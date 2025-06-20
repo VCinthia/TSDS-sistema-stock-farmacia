@@ -27,7 +27,7 @@ export class ProductoService {
 }
 
   getProductosMasVendidos(idSucursal: number):Observable<any> {
-  const url = `${this.BASE_URL}/producto/mas-vendidos/${idSucursal}'`;
+  const url = `${this.BASE_URL}/producto/mas-vendidos/${idSucursal}`;
   return this.http.get(url);
 }
 }

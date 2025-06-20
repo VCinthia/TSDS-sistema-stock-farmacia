@@ -93,7 +93,7 @@
     <div *ngIf="panelAltaRotacionOpen">
       <table mat-table [dataSource]="productosMasVendidos" class="mat-elevation-z1">
 
-        <ng-container matColumnDef="codigo">
+        <ng-container matColumnDef="categoria">
           <th mat-header-cell *matHeaderCellDef> Categoría </th>
           <td mat-cell *matCellDef="let p"> {{p.categoria}} </td>
         </ng-container>
@@ -103,7 +103,7 @@
           <td mat-cell *matCellDef="let p"> {{p.nombre}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="stock">
+        <ng-container matColumnDef="cantidad">
           <th mat-header-cell *matHeaderCellDef> Cantidad vendida </th>
           <td mat-cell *matCellDef="let p"> {{p.cantidad_vendida}} </td>
         </ng-container>
