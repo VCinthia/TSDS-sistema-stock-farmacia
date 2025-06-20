@@ -25,4 +25,9 @@ export class LoteService {
     const url = `${this.BASE_URL}/lote/bySucursal?idSucursal=${idSucursal}`;
     return this.http.get(url);
   }
+
+  obtenerLotesPorVencer(diasAntelacion: number ,idSucursal : number): Observable<any> {
+    const url = `${this.BASE_URL}/lote/sucursal/proximosAVencer?diasDeAntelacion=${diasAntelacion}&idSucursal=${idSucursal}`;
+    return this.http.get(url);
+  }
 }
