@@ -6,7 +6,7 @@ import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ApiResponseDTO } from 'common/dto/api-response.dto';
 import { API_MESSAGES } from 'common/constants/messages';
 import { ResponseLoteDto } from './dto/response-lote.dto';
-import { ResponseLoteDetalleDto } from './dto/response-lote-detalle.dto';
+
 
 @Controller('lote')
 export class LoteController {

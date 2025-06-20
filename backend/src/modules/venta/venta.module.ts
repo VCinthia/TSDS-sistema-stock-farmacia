@@ -22,6 +22,7 @@ import { SucursalService } from '../sucursal/sucursal.service';
 import { RangoDescuento } from 'src/entities/rango-descuento.entity';
 import { RangoDescuentoService } from '../rango-descuento/rango-descuento.service';
 import { DetalleVenta } from 'src/entities/detalle-venta.entity';
+import { PdfMakeService } from '../pdf-make/pdf-make.service';
 
 
 @Module({
@@ -33,7 +34,6 @@ import { DetalleVenta } from 'src/entities/detalle-venta.entity';
       Producto,
       Proveedor,
       Sucursal,
-      TicketReceta,
       Lote,
       RangoDescuento,
       DetalleVenta,
@@ -48,10 +48,10 @@ import { DetalleVenta } from 'src/entities/detalle-venta.entity';
     ProductoService,
     ProveedorService,
     SucursalService,
-    TicketRecetaService,
     LoteService,
     AnmatService,
     RangoDescuentoService,
+    PdfMakeService,
   ]
 })
 export class VentaModule {}
