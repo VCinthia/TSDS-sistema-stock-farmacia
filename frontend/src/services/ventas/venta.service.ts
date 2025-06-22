@@ -25,4 +25,6 @@ export class VentaService {
     const url = `${this.BASE_URL}/venta/bySucursal?idSucursal=${idSucursal}`;
     return this.http.get(url);
   }
+
+  
 }
