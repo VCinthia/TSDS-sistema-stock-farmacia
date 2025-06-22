@@ -1,0 +1,59 @@
+<h1>Módulo de cumplimiento sanitario</h1>
+<mat-card class="alertas-card">
+    <mat-card-content>
+        <div class="section-header">
+            <h3>Reporte de cumplimiento sanitario</h3>
+        </div>
+
+        <mat-card>
+            <mat-table [dataSource]="recetasAReportar" class="mat-elevation-z1">
+
+                <ng-container matColumnDef="idCliente">
+                    <mat-header-cell *matHeaderCellDef> Id Cliente </mat-header-cell>
+                    <mat-cell *matCellDef="let elemento"> {{elemento.id_ticket}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dniCliente">
+                    <mat-header-cell *matHeaderCellDef> DNI Cliente </mat-header-cell>
+                    <mat-cell *matCellDef="let elemento"> {{elemento.dni_paciente}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="nroReceta">
+                    <mat-header-cell *matHeaderCellDef> Número receta </mat-header-cell>
+                    <mat-cell *matCellDef="let elemento"> {{elemento.numero_receta}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="fechaRecepecion">
+                    <mat-header-cell *matHeaderCellDef> Fecha de recepción </mat-header-cell>
+                    <mat-cell *matCellDef="let elemento"> {{elemento.fecha_recepcion | date: 'dd-MM-yyyy'}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="seleccionar">
+                    <mat-header-cell *matHeaderCellDef>
+                        Seleccionar
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let elemento">
+                        <mat-checkbox [(ngModel)]="elemento.seleccionado"
+                            (change)="onCheckboxChange(elemento.numero_receta, elemento.seleccionado)">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: columnas;"></mat-row>
+
+            </mat-table>
+        </mat-card>
+        <!-- <div class="spinner" *ngIf="cargando">
+            <mat-spinner diameter="60" color="accent"></mat-spinner>
+            <p>Cargando datos...</p>
+        </div> -->
+    </mat-card-content>
+</mat-card>
+<div *ngIf="recetasAReportar.length === 0" class="mensaje-no-encontrado">
+  No hay recetas a reportar 
+</div>
+<div class="contenedorBotones">
+    <app-boton-primario (click)="enviarReporteAnmat()" [buttonText]="'Enviar reporte a Anmat'"></app-boton-primario>
+    <app-boton-primario (click)="exportarPDF()" [buttonText]="'Exportar PDF'"></app-boton-primario>
+</div>
