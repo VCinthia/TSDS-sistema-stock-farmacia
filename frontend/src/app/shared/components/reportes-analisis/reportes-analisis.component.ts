@@ -89,8 +89,6 @@ export class ReportesAnalisisComponent implements OnInit {
   exportarPDF(){
 
   const ids: string[] = this.ventasFiltradas.map(v => String(v.id_venta));
-    console.log('Exportando IDs filtrados:', ids); // 👈 Agregá esto
-
 
   if (ids.length === 0) {
     this.toastr.warning('No hay ventas para exportar.');
@@ -104,6 +102,7 @@ export class ReportesAnalisisComponent implements OnInit {
     a.download = 'reporte_ventas.pdf';
     a.click();
     window.URL.revokeObjectURL(url);
+    this.toastr.success('PDF exportado éxitosamente')
   });
   }
 

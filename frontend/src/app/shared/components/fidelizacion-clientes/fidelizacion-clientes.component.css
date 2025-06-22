@@ -1,0 +1,48 @@
+.alertas-card {
+  margin: 16px;
+  background-color: var(--color-terciario);
+  color: var(--bg-page);
+  border-radius: 5px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+table {
+  width: 100%;
+}
+
+h3{
+    font-weight: 500;
+    font-size: 24px;
+}
+
+.contenedorInputDate{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.contenedorBotones{
+    display: flex;
+    justify-content: end;
+    margin: 16px;
+    padding-top: 30px;
+    gap: 20px;
+}
+
+app-boton-primario{
+    width: 180px;
+    height: 56px;
+}
+
+.contenedorFiltro{
+    width: 100%;
+    display: flex;
+    justify-content:flex-start;
+}
