@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { SeedService } from './seed.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Sucursal } from 'src/entities/sucursal.entity';
@@ -8,6 +8,8 @@ import { Cliente } from 'src/entities/cliente.entity';
 import { Usuario } from 'src/entities/usuario.entity';
 import { RangoDescuento } from 'src/entities/rango-descuento.entity';
 import { Lote } from 'src/entities/lote.entity';
+import { Venta } from 'src/entities/venta.entity';
+import { VentaModule } from '../venta/venta.module';
 
 @Module({
   imports: [
@@ -18,10 +20,14 @@ import { Lote } from 'src/entities/lote.entity';
       Cliente, 
       Usuario, 
       RangoDescuento,
-      Lote
+      Lote,
+      Venta
     ]),
+    forwardRef(() => VentaModule) //Evita dependencias circulares
   ],  
-  providers: [SeedService],
+  providers: [
+    SeedService,
+  ],
   exports: [SeedService],
 })
 export class SeedModule {}

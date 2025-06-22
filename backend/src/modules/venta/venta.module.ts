@@ -11,8 +11,6 @@ import { UsuarioService } from '../usuario/usuario.service';
 import { ProductoService } from '../producto/producto.service';
 import { AnmatService } from '../anmat/anmat.service';
 import { HttpModule } from '@nestjs/axios';
-import { TicketReceta } from 'src/entities/ticket-receta.entity';
-import { TicketRecetaService } from '../ticket-receta/ticket-receta.service';
 import { Lote } from 'src/entities/lote.entity';
 import { LoteService } from '../lote/lote.service';
 import { Proveedor } from 'src/entities/proveedor.entity';
@@ -52,6 +50,7 @@ import { PdfMakeService } from '../pdf-make/pdf-make.service';
     AnmatService,
     RangoDescuentoService,
     PdfMakeService,
-  ]
+  ],
+  exports: [VentaService] 
 })
 export class VentaModule {}

@@ -12,6 +12,8 @@ import { Segmento } from 'src/enums/segmento.enum';
 import { TipoProducto } from 'src/enums/tipo-producto.enum';
 import { Repository } from 'typeorm';
 import { Lote } from 'src/entities/lote.entity';
+import { Venta } from 'src/entities/venta.entity';
+import { VentaService } from '../venta/venta.service';
 
 @Injectable()
 export class SeedService {
@@ -23,6 +25,9 @@ export class SeedService {
     @InjectRepository(Usuario) private usuarioRepo: Repository<Usuario>,
     @InjectRepository(RangoDescuento) private rangoDescuentoRepo: Repository<RangoDescuento>,
     @InjectRepository(Lote) private loteRepo: Repository<Lote>,
+    @InjectRepository(Venta) private ventaRepo: Repository<Venta>,
+
+    private ventaService: VentaService,
   ) {}
 
   async seed() {
@@ -33,6 +38,7 @@ export class SeedService {
     await this.seedUsuarios();
     await this.seedRangoDescuento(); 
     await this.seedLotes();
+    await this.seedVentas();
   }
 
   private async seedSucursales() {
@@ -144,7 +150,36 @@ export class SeedService {
   }
  
   
+private async seedVentas() {
+      
+  const ventaCount = await this.ventaRepo.count();
+  if (ventaCount === 0) {
+    const ventasData = [
+      {
+        dni_cliente: "30234567",
+        id_usuario: 1,
+        id_sucursal: 1,
+        productos: [
+          { codigo_nacional: "MED-0001", cantidad: 5 },
+          { codigo_nacional: "INS-0003", cantidad: 2 }
+        ],
+        numero_receta: null
+      },
+    ];
 
+    for (const ventaData of ventasData) {
+      try {
+        const result = await this.ventaService.create(ventaData);
+        if (!result.success) {
+          console.error(`Error creando venta: ${result.message}`);
+        }
+      } catch (error) {
+        console.error(`Error en seed de ventas: ${error.message}`);
+      }
+    }
+    console.log('Ventas insertadas');
+  }
+}
 
 
 }
