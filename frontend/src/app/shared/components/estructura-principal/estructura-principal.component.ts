@@ -17,7 +17,7 @@ interface NavLateral {
 @Component({
   selector: 'app-estructura-principal',
   standalone: true,
-  imports: [MatSidenavModule, RouterOutlet, RouterLink, CommonModule, DialogoCerrarSesionComponent, MatDialogModule],
+  imports: [MatSidenavModule, RouterOutlet, RouterLink, CommonModule, MatDialogModule],
   templateUrl: './estructura-principal.component.html',
   styleUrl: './estructura-principal.component.css'
 })
@@ -75,14 +75,12 @@ export class EstructuraPrincipalComponent implements OnInit {
   }
 
    configurarNavLateral(): void {
-    //ADMIN
     if (this.usuarioLogeado?.rol == 'ADMINISTRADOR'){
       this.navLateral = this.navLateralAdministrativo
     } else {
       this.navLateral = this.navLateralFarmaceutico
     }
   
-    //FARMACEUTICO  
   }
 
   cerrarSesion(): void {
