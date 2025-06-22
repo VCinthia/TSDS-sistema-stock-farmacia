@@ -9,7 +9,6 @@ export type PdfContent =
 
 
 
-
 /**
  * Representa una fila en una tabla PDF
  * 

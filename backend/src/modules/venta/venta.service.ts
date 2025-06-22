@@ -141,6 +141,8 @@ async create(requesBody: CreateVentaDto) : Promise<ApiResponseDTO<Venta | null>>
       detalles: {
         producto: true,
       }
+    }, where : {
+      id_venta: In (idList),
     }
     });
 

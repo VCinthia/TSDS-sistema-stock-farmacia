@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts'; 
-import { PdfContent, PdfDocumentDefinition, PdfFonts, PdfGenerateResult, PdfStyleDefinition, PdfTableRow } from './interfaces/pdf.interface';
+import { PdfContent, PdfDocumentDefinition, PdfFonts, PdfGenerateResult, PdfStyleDefinition, PdfTableRow} from './interfaces/pdf.interface';
 import { DetalleVentaDTO, ResponseVentaDto } from '../venta/dto/response-venta.dto';
 import { formatCurrency, formatDateTime, formatPercentage } from 'common/helpers/formatter-helper';
 
@@ -77,41 +77,36 @@ export class PdfMakeService {
       bold: true,
       alignment: 'center',
       margin: [0, 0, 0, 10],
-      font: 'Roboto'
     },
     subheader: {
       fontSize: 10,
       bold: true,
       color: '#444444',
       margin: [0, 0, 0, 15],
-      font: 'Roboto'
     },
     tableHeader: {
       bold: true,
       fontSize: 9,
-      color: 'black',
-      fillColor: '#f2f2f2',
+      color: '#44474E',
+      fillColor: '#D0D2DB',
       alignment: 'center',
-      font: 'Roboto'
     },
     tableCell: {
       fontSize: 9,
       padding: [0, 3, 0, 3],
-      font: 'Roboto'
     },
     ventaHeader: {
       bold: true,
       fontSize: 10,
-      fillColor: '#E9F1FA',
+      color: '#fff',
+      fillColor: '#6B8099',
       margin: [0, 5, 0, 2],
-      font: 'Roboto'
     },
     noDetails: {
       fontSize: 9,
       italic: true,
       color: '#999999',
       alignment: 'center',
-      font: 'Roboto'
     },
     separator: {
       fontSize: 4,
@@ -120,21 +115,15 @@ export class PdfMakeService {
     summaryLabel: {
       bold: true,
       fontSize: 9,
-      font: 'Roboto'
     },
     summaryValue: {
       bold: false,
       fontSize: 9,
-      font: 'Roboto'
     },
     ventaSummary: {
-      font: 'Roboto',
       margin: [0, 10, 0, 5],
       lineHeight: 1.3,
-      background: '#f9f9f9',
-      border: [false, false, false, true],
-      borderColor: '#eeeeee',
-      borderLineWidth: 1,
+      background: '#ffffff',
       padding: [5, 10, 5, 10]
     }
   };
@@ -215,7 +204,7 @@ private createHeaderCell(text: string): PdfTableRow {
   return {
     table: {
       widths: ['*', 'auto', 'auto', 'auto'],
-      body: tableBody
+      body: tableBody,
     }
   };
 }
@@ -274,7 +263,7 @@ private createVentaSummaryRow(venta: ResponseVentaDto): PdfTableRow[] {
     { text: `${venta.ticketReceta?.numero_receta || 'N/A'}`, style: 'summaryValue' },
     { text: '   |   Descuento: ', style: 'summaryLabel' },
     { text: `${formatPercentage(venta.descuento_porcentaje)}`, style: 'summaryValue' },
-    { text: '   |   Total: ', style: 'summaryLabel' },
+    { text: '   |   Precio final: ', style: 'summaryLabel' },
     { text: formatCurrency(venta.total_final), style: 'summaryValue' }
   ];
   return [
@@ -296,7 +285,6 @@ private createSeparatorRow(): PdfTableRow[] {
       text: '',
       style: 'separator',
       colSpan: this.numeroColumnas,
-      border: [false, false, false, true]
     },
     this.createOneEmptyCell(),
     this.createOneEmptyCell(),
@@ -329,5 +317,6 @@ private createDataRow(venta: ResponseVentaDto, detalle: DetalleVentaDTO): PdfTab
     }
   ];
 }
+
 
 }
