@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Producto } from 'src/entities/producto.entity';
 import { Lote } from 'src/entities/lote.entity';
 import { DetalleVenta } from 'src/entities/detalle-venta.entity';
+import { Sucursal } from 'src/entities/sucursal.entity';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { DetalleVenta } from 'src/entities/detalle-venta.entity';
       Producto,
       Lote,
       DetalleVenta,
+      Sucursal
     ])
   ],  
   controllers: [ProductoController],

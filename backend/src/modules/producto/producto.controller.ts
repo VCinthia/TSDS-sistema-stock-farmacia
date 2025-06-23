@@ -25,7 +25,7 @@ export class ProductoController {
   }
 
 
-  @Get("/stock-critico/:idSucursal'")
+  @Get("/stock-critico/:idSucursal")
   @ApiOperation({ summary: 'Retorna productos con stock crítico o agotado de una sucursal' })
   @ApiResponse({ status: HttpStatus.OK, description: API_MESSAGES.PRODUCTOS.ALL, type: ApiResponseDTO<ResponseProductoDto[]>, })
   async findAllBySucursal(@Param('idSucursal', new ParseIntPipe()) idSucursal: number): Promise<ApiResponseDTO<ResponseProductoDto[] | null>> {

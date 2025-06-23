@@ -15,6 +15,7 @@ import { API_MESSAGES } from 'common/constants/messages';
 import { DetalleVenta } from 'src/entities/detalle-venta.entity';
 import { ResponseProductoMasVendidosDto } from './dto/response-producto-mas-vendidos.dto';
 import { Deserializer } from 'v8';
+import { Sucursal } from 'src/entities/sucursal.entity';
 
 @Injectable()
 export class ProductoService {
@@ -27,6 +28,8 @@ export class ProductoService {
 
     @InjectRepository(DetalleVenta)
     private readonly detalleVentaRepo: Repository<DetalleVenta>,
+    @InjectRepository(Sucursal)
+    private readonly sucursalRepo: Repository<Sucursal>,
   ) {}
 
 
@@ -52,11 +55,20 @@ export class ProductoService {
   async getProductosStockCritico(idSucursal: number): Promise<ApiResponseDTO<ResponseProductoDto[] | null>> {
     Logger.log(`Inicio - idSucursal: ${idSucursal}`,getMethodName());
     try{
+
+    // Verificar si la sucursal existe
+    const sucursalExists = await this.sucursalRepo.findOne({ where: { id_sucursal: idSucursal } });
+    if (!sucursalExists) {
+      return ApiResponseDTO.error("Sucursal no encontrada", ErrorCodes.NOT_FOUND);
+    }
+
        const hoy = new Date();
     
     // Obtener todos los productos con su umbral de stock
     const productosDB = await this.productoRepo.find();
 
+
+    
     // Obtener lotes válidos para la sucursal
     const lotes = await this.loteRepo.find({
       relations: {

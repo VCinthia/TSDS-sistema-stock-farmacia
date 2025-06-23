@@ -22,7 +22,7 @@ export class ProductoService {
 }
 
   getProductosStockCritico(idSucursal: number):Observable<any> {
-  const url = `${this.BASE_URL}/producto/stock-critico/${idSucursal}'`;
+  const url = `${this.BASE_URL}/producto/stock-critico/${idSucursal}`;
   return this.http.get(url);
 }
 
