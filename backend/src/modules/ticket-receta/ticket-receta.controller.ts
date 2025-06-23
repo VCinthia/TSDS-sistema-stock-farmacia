@@ -13,12 +13,6 @@ export class TicketRecetaController {
 
 
 
-  @Get()
-  findAll() {
-    return this.ticketRecetaService.findAll();
-  }
-
-
   @Get("/noReportadosAnmat")
   @ApiOperation({ summary: 'Obtiene todos los tickets receta sin reporte ANMAT asociado ordenados por fecha de recepción'})
   @ApiResponse({ status: HttpStatus.OK,description: API_MESSAGES.TICKET_RECETA.SIN_REPORTE, type: ApiResponseDTO<ResponseTicketRecetaDto[]> })
@@ -26,12 +20,6 @@ export class TicketRecetaController {
     return this.ticketRecetaService.findTicketsRecetaSinReporteAnmat();
   }
 
-
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ticketRecetaService.findOne(+id);
-  }
 
 
 }

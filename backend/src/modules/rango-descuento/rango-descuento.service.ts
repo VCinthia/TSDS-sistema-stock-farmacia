@@ -16,22 +16,12 @@ export class RangoDescuentoService {
   
 
 
-  create(createRangoDescuentoDto: CreateRangoDescuentoDto) {
-    return 'This action adds a new rangoDescuento';
-  }
-
-  findAll() {
-    return `This action returns all rangoDescuento`;
-  }
 
   async findBySegmento(segmento : Segmento) {
    return await this.rangoRepo.findOne({ where: { segmento: segmento} });
   }
 
 
-  update(id: number, updateRangoDescuentoDto: UpdateRangoDescuentoDto) {
-    return `This action updates a #${id} rangoDescuento`;
-  }
 
 /**
    * Busca el rango de descuento que corresponde para la cantidad de puntos dada.

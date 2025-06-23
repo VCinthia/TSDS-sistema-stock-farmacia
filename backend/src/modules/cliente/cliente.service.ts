@@ -60,22 +60,12 @@ export class ClienteService {
 
 
 
-  create(createClienteDto: CreateClienteDto) {
-    return 'This action adds a new cliente';
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cliente`;
-  }
-
-  async findByDni(dni: string){
+async findByDni(dni: string){
   return await this.clienteRepo.findOne({ where: { dni: dni} });
 }
 
 
-  update(id: number, updateClienteDto: UpdateClienteDto) {
-    return `This action updates a #${id} cliente`;
-  }
 
 
 }

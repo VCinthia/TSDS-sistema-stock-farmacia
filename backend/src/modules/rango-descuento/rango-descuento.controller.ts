@@ -7,20 +7,6 @@ import { UpdateRangoDescuentoDto } from './dto/update-rango-descuento.dto';
 export class RangoDescuentoController {
   constructor(private readonly rangoDescuentoService: RangoDescuentoService) {}
 
-  @Post()
-  create(@Body() createRangoDescuentoDto: CreateRangoDescuentoDto) {
-    return this.rangoDescuentoService.create(createRangoDescuentoDto);
-  }
 
-  @Get()
-  findAll() {
-    return this.rangoDescuentoService.findAll();
-  }
-
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRangoDescuentoDto: UpdateRangoDescuentoDto) {
-    return this.rangoDescuentoService.update(+id, updateRangoDescuentoDto);
-  }
 
 }

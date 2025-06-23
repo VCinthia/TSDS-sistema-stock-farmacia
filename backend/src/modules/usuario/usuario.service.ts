@@ -22,22 +22,9 @@ export class UsuarioService {
 
 
 
-  create(createUsuarioDto: CreateUsuarioDto) {
-    return 'This action adds a new usuario';
-  }
-
-  findAll() {
-    return `This action returns all usuario`;
-  }
-
   async findOne(id: number) {
    return await this.usuarioRepo.findOne({ where: { id_usuario: id} });
   }
-
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
-  }
-
 
 
 

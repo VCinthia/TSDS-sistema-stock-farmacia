@@ -6,14 +6,5 @@ import { DetalleVentaService } from './detalle-venta.service';
 export class DetalleVentaController {
   constructor(private readonly detalleVentaService: DetalleVentaService) {}
 
-  @Get()
-  findAll() {
-    return this.detalleVentaService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.detalleVentaService.findOne(+id);
-  }
 
 }

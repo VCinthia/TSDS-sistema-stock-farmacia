@@ -20,10 +20,6 @@ export class TicketRecetaService {
 
 
 
-  findAll() {
-    return `This action returns all ticketReceta`;
-  }
-
 
   async findTicketsRecetaSinReporteAnmat(): Promise<ApiResponseDTO<ResponseTicketRecetaDto[] | null>> {
   Logger.log(`Inicio`, getMethodName());
@@ -56,12 +52,6 @@ export class TicketRecetaService {
   }
 }
 
-
-
-
-  findOne(id: number) {
-    return `This action returns a #${id} ticketReceta`;
-  }
 
 
 }

@@ -22,14 +22,4 @@ export class ReporteAnmatController {
   }
  
 
-  @Get()
-  findAll() {
-    return this.reporteAnmatService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reporteAnmatService.findOne(+id);
-  }
-
 }

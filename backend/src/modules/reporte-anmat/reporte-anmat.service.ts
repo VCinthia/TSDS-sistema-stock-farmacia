@@ -88,13 +88,4 @@ private async guardarReporteExitoso(codigo: string, respuesta: ResponseReporteRe
 
 
 
-
-  findAll() {
-    return `This action returns all reporteAnmat`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} reporteAnmat`;
-  }
-
 }
