@@ -16,6 +16,12 @@ services:
       - ./initdb/:/docker-entrypoint-initdb.d  # <- Carpeta local mapeada
     networks:
       - app-network 
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:   # Servicio para NestJS
     container_name: backend-farmacia
     build: ./backend  # Ruta a tu Dockerfile del backend
@@ -56,9 +62,10 @@ services:
     environment:
       NODE_ENV: test
     depends_on:
-      - mysql-farmacia
+      mysql-farmacia:
+        condition: service_healthy
     networks:
-      - app-network 
+      - app-network
 
 
 
