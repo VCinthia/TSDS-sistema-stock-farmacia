@@ -6,61 +6,89 @@ import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
-import { AgregarLoteFormComponent } from '../agregar-lote-form/agregar-lote-form.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Toast, ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
+import { VentaService } from '../../../../services/ventas/venta.service';
+import { VentaDTO } from '../../../../core/dtos/venta.dto';
+import { AgregarVentaFormComponent } from '../agregar-venta-form/agregar-venta-form.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-ventas',
-  imports: [BotonPrimarioComponent, BotonSecundarioComponent, MatInputModule, FormsModule, MatTableModule, MatButtonModule, MatCard],
+  imports: [BotonPrimarioComponent, BotonSecundarioComponent, MatInputModule, FormsModule, MatTableModule, MatButtonModule, MatCard, MatProgressSpinnerModule, CommonModule],
   templateUrl: './ventas.component.html',
   styleUrl: './ventas.component.css'
 })
 export class VentasComponent {
 
-  constructor(public dialog: MatDialog, private toastr: ToastrService) {}
+  ventas: VentaDTO[] = [];
+  idSucursalEmpleado: string | undefined;
+  filtroIdVenta: string = ''; 
+  ventasFiltradas: VentaDTO[] = []; 
+  cargando: boolean = false;
 
-  agregarRecetaElectronica(){
-    this.toastr.success('Receta agregada exitosamente')
-  }
+  constructor(public dialog: MatDialog, private toastr: ToastrService, private ventaService : VentaService) {}
 
-  emitirFactura(){
-    this.toastr.success('Factura emitida exitosamente')
-  }
 
   producto: string = "";
   dni: string = "";
-  columnas: string[] = ['codigo', 'nombre', 'categoria', 'stock', 'precio', 'cantidad', 'accion'];
+  columnas: string[] = ['idVenta', 'fecha', 'sucursal', 'precioTotal', 'accion'];
 
-  dataSource = [
-    {
-      codigo: '2f1c8bca',
-      nombre: 'Ibuprofeno 400mg',
-      categoria: 'Analgésico',
-      stock: 6,
-      precio: 2000.5,
-      cantidad: 2,
-      accion: 'Agregar'
-    },
-    {
-      codigo: '3f8c8ced',
-      nombre: 'Amoxicilina 500mg',
-      categoria: 'Antibiótico',
-      stock: 4,
-      precio: 4000.5,
-      cantidad: 5,
-      accion: 'Agregar'
-    },
-    {
-      codigo: '7h8c9jhf',
-      nombre: 'Omeprazol 20mg',
-      categoria: 'Digestivo',
-      stock: 9,
-      precio: 2000.5,
-      cantidad: 2,
-      accion: 'Agregar'
+  ngOnInit(): void {
+  const empleado = JSON.parse(localStorage.getItem('usuario') || '{}');
+  this.idSucursalEmpleado = empleado?.sucursal?.id_sucursal || '';
+
+  this.cargarVentas();
+}
+
+  abrirFormAgregarVenta(): void {
+    const dialogRef = this.dialog.open(AgregarVentaFormComponent, {
+      width:'520px',
+      height:'520px'
+    });
+    
+    dialogRef.afterClosed().subscribe(() => {
+      this.cargarVentas(); 
+      this.cargando = true;
+      setTimeout(() => {
+        this.cargando = false;
+      }, 700); 
     }
-  ];
+  );
+
+  }
+
+  cargarVentas(): void {
+  this.cargando = true;
+  this.ventaService.obtenerTodasVentas().subscribe({
+    next: (response) => {
+      this.ventas = response.data;
+      this.ventasFiltradas = response.data;
+      console.log(this.ventas)
+      setTimeout(() => {
+        this.cargando = false;
+      }, 700); 
+    },
+    error: (err) => {
+      console.error('Error al obtener las ventas', err);
+    }
+  });
+
+}
+
+filtrarPorIdVenta() {
+  const filtro = this.producto.trim();
+
+  if (!filtro) {
+    this.ventasFiltradas = [...this.ventas]; 
+  } else {
+    this.ventasFiltradas = this.ventas.filter(v =>
+      v.id_venta?.toString().includes(filtro)
+    );
+  }
+}
+
 }
 
 

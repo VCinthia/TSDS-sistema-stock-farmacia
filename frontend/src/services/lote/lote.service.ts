@@ -15,4 +15,19 @@ export class LoteService {
     const url = `${this.BASE_URL}/lote`;
     return this.http.post(url, lote);
   }
+
+  obtenerTodosLotes(): Observable<any> {
+    const url = `${this.BASE_URL}/lote`;
+    return this.http.get(url);
+  }
+
+  obtenerLotesPorSucursal(idSucursal : number): Observable<any> {
+    const url = `${this.BASE_URL}/lote/bySucursal?idSucursal=${idSucursal}`;
+    return this.http.get(url);
+  }
+
+  obtenerLotesPorVencer(diasAntelacion: number ,idSucursal : number): Observable<any> {
+    const url = `${this.BASE_URL}/lote/sucursal/proximosAVencer?diasDeAntelacion=${diasAntelacion}&idSucursal=${idSucursal}`;
+    return this.http.get(url);
+  }
 }

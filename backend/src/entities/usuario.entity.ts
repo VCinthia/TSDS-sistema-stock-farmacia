@@ -1,5 +1,5 @@
 import { Rol } from "src/enums/rol.enum";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Sucursal } from "./sucursal.entity";
 import { Venta } from "./venta.entity";
 
@@ -21,6 +21,7 @@ export class Usuario {
   rol: Rol;
 
   @ManyToOne(() => Sucursal, sucursal => sucursal.usuarios)
+  @JoinColumn({ name: 'id_sucursal' })
   sucursal: Sucursal;  //Aqui se muestra el ID
 
   @OneToMany(() => Venta, venta => venta.usuario)

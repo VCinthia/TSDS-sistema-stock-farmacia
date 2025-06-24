@@ -49,3 +49,16 @@ app-boton-secundario{
     display: flex;
     gap: 20px;
 }
+
+.spinner{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  background-color: transparent;
+}
+
+.mensaje-no-encontrado{
+    padding-top: 20px;
+}

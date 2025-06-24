@@ -9,6 +9,7 @@ import { Sucursal } from 'src/entities/sucursal.entity';
 import { ProductoService } from '../producto/producto.service';
 import { ProveedorService } from '../proveedor/proveedor.service';
 import { SucursalService } from '../sucursal/sucursal.service';
+import { DetalleVenta } from 'src/entities/detalle-venta.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { SucursalService } from '../sucursal/sucursal.service';
       Lote, 
       Producto, 
       Proveedor, 
-      Sucursal
+      Sucursal,
+      DetalleVenta,
     ])
   ],  
   controllers: [LoteController],
@@ -24,7 +26,7 @@ import { SucursalService } from '../sucursal/sucursal.service';
     LoteService, 
     ProductoService,
     ProveedorService,
-    SucursalService
+    SucursalService,
   ],
 })
 export class LoteModule {}

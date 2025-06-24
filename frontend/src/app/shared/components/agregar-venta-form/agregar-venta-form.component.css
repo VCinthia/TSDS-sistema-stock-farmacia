@@ -1,0 +1,38 @@
+.formContainer{
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+mat-form-field{
+    padding-bottom: 10px;
+}
+
+h2{
+    padding-bottom: 20px;
+}
+
+.btnContainer{
+    display: flex;
+    gap: 20px;justify-content: end;
+    padding: 10px;
+
+}
+
+app-boton-primario, app-boton-secundario, app-boton-inactivo{
+    width: 130px;
+    min-height: 45px;
+}
+
+.productoCantidadContainer{
+    display: flex;
+    justify-content:space-between;
+    gap: 20px;
+    width: 100%;
+}
+
+.inputRecetaContainer{
+    display: flex;
+    margin-top: 20px;
+}
